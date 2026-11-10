@@ -11,7 +11,7 @@
 :root[data-theme="dark"]{color-scheme:dark;--bg:#0c1311;--card:#151f1b;--ink:#e8f1ec;--mute:#93a69c;--line:#243029;--acc:#f0604b;--accfg:#1a0705;--ok:#2fb98a;--okfg:#04170f;--warn:#e6a940;--sh:none}
 *{box-sizing:border-box}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.7 'Vazirmatn',Tahoma,system-ui,sans-serif;padding-bottom:calc(150px + env(safe-area-inset-bottom,0px))}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.7 'Vazirmatn',Tahoma,system-ui,sans-serif;padding-bottom:calc(175px + env(safe-area-inset-bottom,0px))}
 #main{max-width:680px;margin:0 auto;padding:6px 16px}
 h1{font-size:23px;font-weight:800;margin:14px 0 10px}
 h2{font-size:16px;font-weight:600;margin:22px 0 8px}
@@ -26,13 +26,17 @@ button{cursor:pointer;border:0;background:none}
 .ch.dot::after{content:"";position:absolute;top:3px;inset-inline-start:3px;width:9px;height:9px;border-radius:50%;background:var(--acc)}
 .items{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 @media(min-width:520px){.items{grid-template-columns:repeat(3,1fr)}}
-.it{position:relative;text-align:start;padding:14px 14px 12px;border-radius:16px;background:var(--card);box-shadow:var(--sh);min-height:92px;display:flex;flex-direction:column;justify-content:space-between;gap:6px;width:100%;border:2px solid transparent}
-.it b{font-weight:600;line-height:1.4}
-.it small{font-size:13px}
-.it.sel{border-color:var(--ok)}
+.it{position:relative;overflow:hidden;text-align:start;aspect-ratio:1;border-radius:28px;background:var(--card);box-shadow:var(--sh);width:100%;border:.5px solid rgba(120,120,120,.3);display:flex;flex-direction:column;justify-content:flex-end;cursor:pointer}
+.it b{display:block;font-weight:600;font-size:14px;line-height:1.35;color:#fff}
+.it small{font-size:12.5px;color:rgba(255,255,255,.9)}
+.it img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding-bottom:30px;font-size:48px;font-weight:800;color:var(--ok);background:var(--line)}
+.cap{position:relative;padding:32px 12px 11px;background:linear-gradient(transparent,rgba(0,0,0,.75))}
+.it.sel{border-color:var(--ok);box-shadow:0 0 0 1.5px var(--ok)}
+@media(prefers-reduced-motion:no-preference){.it{transition:transform .12s}.it:active{transform:scale(.97)}}
 .bd{position:absolute;top:8px;inset-inline-end:8px;min-width:26px;height:26px;border-radius:13px;background:var(--ok);color:var(--okfg);font-weight:700;text-align:center;line-height:26px;font-size:13px;padding:0 6px}
-.mn{position:absolute;bottom:8px;inset-inline-end:8px;width:30px;height:30px;border-radius:15px;background:var(--bg);font-size:18px;line-height:1}
-.cart{position:fixed;inset-inline:0;bottom:calc(64px + env(safe-area-inset-bottom,0px));padding:0 16px;z-index:9;pointer-events:none}
+.mn{position:absolute;top:8px;inset-inline-start:8px;width:32px;height:32px;border-radius:16px;background:rgba(255,255,255,.92);color:#101d19;font-size:20px;line-height:1}
+.cart{position:fixed;inset-inline:0;bottom:calc(88px + env(safe-area-inset-bottom,0px));padding:0 16px;z-index:9;pointer-events:none}
 .cart button{pointer-events:auto;display:flex;justify-content:space-between;width:100%;max-width:648px;margin:auto;padding:14px 18px;border-radius:16px;background:var(--ok);color:var(--okfg);font-weight:600;box-shadow:0 6px 20px rgba(0,0,0,.2)}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 @media(min-width:520px){.grid{grid-template-columns:repeat(3,1fr)}}
@@ -66,19 +70,27 @@ button{cursor:pointer;border:0;background:none}
 .bar .tr{height:10px;background:var(--line);border-radius:5px;overflow:hidden}
 .bar i{display:block;height:100%;background:var(--ok)}
 .bar em{font-style:normal;color:var(--mute);text-align:end}
-nav{position:fixed;inset:auto 0 0 0;display:flex;background:var(--card);box-shadow:0 -1px 0 var(--line);padding-bottom:env(safe-area-inset-bottom,0px);z-index:10}
-nav button{flex:1;padding:8px 0 7px;font-size:11.5px;color:var(--mute);display:flex;flex-direction:column;align-items:center}
-nav button span{font-size:20px;line-height:1.3}
+nav{position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));max-width:520px;margin:0 auto;display:flex;padding:4px;border-radius:28px;background:rgba(255,255,255,.62);-webkit-backdrop-filter:saturate(180%) blur(24px);backdrop-filter:saturate(180%) blur(24px);box-shadow:0 8px 28px rgba(0,0,0,.14),inset 0 0 0 1px rgba(255,255,255,.55);z-index:10}
+nav button{flex:1;padding:9px 0 8px;font-size:11px;color:var(--mute);display:flex;flex-direction:column;align-items:center;gap:2px;position:relative;border-radius:22px}
+nav svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nb{position:absolute;top:3px;left:calc(50% + 3px);min-width:17px;height:17px;border-radius:9px;background:var(--acc);color:var(--accfg);font-size:10px;line-height:17px;font-weight:700;font-style:normal;text-align:center;padding:0 4px}
+.nb:empty{display:none}
+#main{position:relative}
+.gear{position:absolute;top:14px;inset-inline-end:16px;width:42px;height:42px;border-radius:50%;background:var(--card);box-shadow:var(--sh);display:flex;align-items:center;justify-content:center;color:var(--ink)}
+.gear svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 nav button.on{color:var(--ok);font-weight:600}
+nav button.on svg{stroke-width:2.2}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) nav{background:rgba(24,34,30,.55);box-shadow:0 8px 28px rgba(0,0,0,.4),inset 0 0 0 1px rgba(255,255,255,.1)}}
+:root[data-theme="dark"] nav{background:rgba(24,34,30,.55);box-shadow:0 8px 28px rgba(0,0,0,.4),inset 0 0 0 1px rgba(255,255,255,.1)}
 #sh{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center;z-index:20}
 #sh.open{display:flex}
 .in{background:var(--card);width:100%;max-width:680px;max-height:92%;overflow:auto;border-radius:22px 22px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px));position:relative}
 .in h2{margin-top:2px}
 .x{position:absolute;top:10px;inset-inline-end:10px;width:36px;height:36px;border-radius:18px;font-size:18px;color:var(--mute)}
 label{display:block;margin-top:12px;font-size:13px;color:var(--mute)}
-input,select{display:block;width:100%;margin-top:4px;padding:11px 12px;border:1.5px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink)}
+input,select{display:block;width:100%;margin-top:4px;padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink)}
 .err{color:var(--acc);min-height:1.2em;font-size:13px}
-#toast{position:fixed;inset-inline:16px;bottom:calc(130px + env(safe-area-inset-bottom,0px));max-width:420px;margin:auto;background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:12px;text-align:center;opacity:0;pointer-events:none;transition:opacity .2s;z-index:30}
+#toast{position:fixed;inset-inline:16px;bottom:calc(150px + env(safe-area-inset-bottom,0px));max-width:420px;margin:auto;background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:12px;text-align:center;opacity:0;pointer-events:none;transition:opacity .2s;z-index:30}
 #toast.on{opacity:1}
 .rc{background:#fff;color:#000;padding:14px;border-radius:10px;max-width:300px;margin:6px auto;font-size:13px;line-height:1.6;box-shadow:0 0 0 1px var(--line)}
 .rc h3{text-align:center;margin:0 0 4px;font-size:17px}
@@ -101,11 +113,10 @@ input,select{display:block;width:100%;margin-top:4px;padding:11px 12px;border:1.
 <div id="main"></div>
 <div id="cartbar" class="cart"></div>
 <nav>
-<button data-t="order" onclick="go('order')"><span>🧾</span>سفارش</button>
-<button data-t="tables" onclick="go('tables')"><span>🍽</span>میزها</button>
-<button data-t="menu" onclick="go('menu')"><span>📋</span>منو</button>
-<button data-t="inv" onclick="go('inv')"><span>📦</span>انبار</button>
-<button data-t="rep" onclick="go('rep')"><span>📊</span>گزارش</button>
+<button data-t="tables" onclick="go('tables')"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>میزها</button>
+<button data-t="order" onclick="go('order')"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><path d="M12 8.5v7M8.5 12h7"/></svg>سفارش</button>
+<button data-t="live" onclick="go('live')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>سفارش جاری<i class="nb" id="nb"></i></button>
+<button data-t="done" onclick="go('done')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16 9.5"/></svg>تسویه شده</button>
 </nav>
 <div id="sh" onclick="if(event.target===this)closeSheet()"></div>
 <div id="toast" role="status"></div>
@@ -115,13 +126,26 @@ const $=s=>document.querySelector(s);
 const fa=n=>Number(n).toLocaleString('fa-IR',{maximumFractionDigits:2});
 const T=n=>fa(n)+' تومان';
 const E=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ill=(bg,x)=>'data:image/svg+xml,'+encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect width='200' height='200' fill='${bg}'/>${x}</svg>`);
+const plate=`<ellipse cx='100' cy='112' rx='78' ry='34' fill='#fff'/><ellipse cx='100' cy='108' rx='62' ry='25' fill='#f1efe9'/>`;
+const DEMO={
+1:ill('#f3d9a6',plate+`<ellipse cx='100' cy='102' rx='46' ry='17' fill='#fffaf0'/><rect x='48' y='74' width='104' height='13' rx='6.5' fill='#b4512c'/><rect x='48' y='91' width='104' height='13' rx='6.5' fill='#9f4424'/><circle cx='150' cy='70' r='13' fill='#d63d2a'/><path d='M146 59q4-8 9 0' stroke='#3c7a32' stroke-width='3' fill='none'/>`),
+2:ill('#f5cc92',plate+`<line x1='42' y1='100' x2='158' y2='100' stroke='#8a6a3b' stroke-width='3'/><rect x='52' y='86' width='26' height='28' rx='9' fill='#e1913b'/><rect x='82' y='86' width='26' height='28' rx='9' fill='#d9822e'/><rect x='112' y='86' width='26' height='28' rx='9' fill='#e1913b'/><circle cx='148' cy='100' r='9' fill='#d63d2a'/>`),
+3:ill('#d3e6c8',`<path d='M36 82h128a64 60 0 0 1-128 0z' fill='#f4f1ea'/><ellipse cx='100' cy='82' rx='64' ry='14' fill='#3d6a2c'/><circle cx='80' cy='82' r='5' fill='#8c3a2a'/><circle cx='108' cy='85' r='5' fill='#8c3a2a'/><circle cx='126' cy='80' r='4' fill='#a8452f'/>`),
+4:ill('#f1d3d4',plate+`<ellipse cx='96' cy='102' rx='44' ry='17' fill='#fffaf0'/><circle cx='78' cy='98' r='3.5' fill='#c2213a'/><circle cx='92' cy='92' r='3.5' fill='#c2213a'/><circle cx='108' cy='98' r='3.5' fill='#c2213a'/><circle cx='118' cy='90' r='3.5' fill='#c2213a'/><circle cx='100' cy='104' r='3.5' fill='#c2213a'/><rect x='118' y='86' width='40' height='26' rx='12' fill='#d98a3d'/>`),
+5:ill('#d8eed0',`<path d='M40 86h120a60 56 0 0 1-120 0z' fill='#f4f1ea'/><circle cx='76' cy='82' r='14' fill='#d63d2a'/><circle cx='104' cy='78' r='14' fill='#e24c36'/><circle cx='128' cy='84' r='12' fill='#8fc46a'/><circle cx='92' cy='90' r='11' fill='#9ed07a'/><path d='M56 78q10-22 28-8' stroke='#3c8a3c' stroke-width='5' fill='none'/>`),
+6:ill('#dce9f5',`<path d='M68 40h64l-8 104H76z' fill='#fbfbf6' stroke='#c4d3e1' stroke-width='3'/><path d='M71 62h58' stroke='#e9eef2' stroke-width='10'/><circle cx='100' cy='46' r='5' fill='#5fae5a'/><circle cx='88' cy='90' r='3' fill='#e4edf4'/><circle cx='108' cy='110' r='3' fill='#e4edf4'/>`),
+7:ill('#f6d4d0',`<rect x='72' y='34' width='56' height='110' rx='12' fill='#c8202f'/><rect x='72' y='70' width='56' height='30' fill='#fff'/><rect x='82' y='30' width='36' height='8' rx='4' fill='#b8bec4'/><circle cx='148' cy='60' r='5' fill='#fff' opacity='.7'/><circle cx='158' cy='86' r='3' fill='#fff' opacity='.7'/>`),
+8:ill('#eddcc8',`<ellipse cx='100' cy='140' rx='58' ry='12' fill='#fff'/><path d='M72 62h56l-6 72H78z' fill='#b95a1f' opacity='.9'/><path d='M72 62h56l-1 10H73z' fill='#e8b98a'/><path d='M88 50q-6-12 2-20M108 50q-6-12 2-20' stroke='#b9a58f' stroke-width='3' fill='none' stroke-linecap='round'/>`)
+};
 let S=null;
 try{S=JSON.parse(localStorage.getItem('rest1'))}catch(e){}
 if(!S)S={tables:8,orders:{},nid:100,sales:[],
 menu:[{id:1,name:'چلوکباب کوبیده',price:250000,inv:1,use:0.2,cat:'غذای اصلی'},{id:2,name:'جوجه‌کباب',price:230000,inv:2,use:0.25,cat:'غذای اصلی'},{id:3,name:'قورمه‌سبزی',price:200000,inv:3,use:0.15,cat:'غذای اصلی'},{id:4,name:'زرشک‌پلو با مرغ',price:190000,inv:2,use:0.25,cat:'غذای اصلی'},{id:5,name:'سالاد شیرازی',price:40000,inv:'',use:0,cat:'پیش‌غذا'},{id:6,name:'دوغ',price:25000,inv:5,use:1,cat:'نوشیدنی'},{id:7,name:'نوشابه',price:20000,inv:4,use:1,cat:'نوشیدنی'},{id:8,name:'چای',price:15000,inv:'',use:0,cat:'نوشیدنی'}],
 inv:[{id:1,name:'گوشت چرخ‌کرده',qty:12,unit:'کیلو',min:3},{id:2,name:'مرغ',qty:15,unit:'کیلو',min:4},{id:3,name:'برنج',qty:20,unit:'کیلو',min:5},{id:4,name:'نوشابه',qty:24,unit:'عدد',min:6},{id:5,name:'دوغ',qty:18,unit:'عدد',min:6}]};
 S.menu.forEach(m=>m.cat=m.cat||'غذای اصلی');S.rn=S.rn||1;S.name=S.name||'رستوران من';
-const save=()=>{try{localStorage.setItem('rest1',JSON.stringify(S))}catch(e){}};
+if(!S.demo){S.menu.forEach(m=>{if(!m.img&&DEMO[m.id])m.img=DEMO[m.id]});S.demo=1}
+const save=()=>{try{localStorage.setItem('rest1',JSON.stringify(S))}catch(e){toast('حافظه پر است؛ تعداد عکس‌ها را کم کنید')}};
 let tab='order',cur='1',cf='';
 const lb=t=>typeof t=='number'?'میز '+fa(t):t;
 const curLb=()=>cur=='T'?'بیرون‌بر':'میز '+fa(cur);
@@ -129,7 +153,8 @@ const cnt=o=>Object.values(o||{}).reduce((a,b)=>a+b,0);
 function go(t){tab=t;render();scrollTo(0,0)}
 function render(){
  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===tab));
- $('#main').innerHTML=({order:vOrder,tables:vTables,menu:vMenu,inv:vInv,rep:vRep})[tab]();
+ $('#main').innerHTML=(tab=='set'?'':GEAR)+({order:vOrder,tables:vTables,set:vSet,live:vLive,done:vRep})[tab]();
+ $('#nb').textContent=Object.keys(S.orders).length||'';
  const o=S.orders[cur],n=cnt(o);
  $('#cartbar').innerHTML=tab=='order'&&n?`<button onclick="openOrder()"><span>${curLb()}: ${fa(n)} آیتم</span><b>${T(ordTotal(o))}</b></button>`:'';
 }
@@ -148,15 +173,15 @@ function vOrder(){
  for(let i=1;i<=S.tables;i++)h+=`<button class="ch ${cur==i?'on':''} ${S.orders[i]?'dot':''}" onclick="selT(${i})">میز ${fa(i)}</button>`;
  h+='</div><div class="chips"><button class="ch '+(cf?'':'on')+'" onclick="cf=\'\';render()">همه</button>'+cats.map(c=>`<button class="ch ${cf==c?'on':''}" onclick="cf=this.dataset.c;render()" data-c="${E(c)}">${E(c)}</button>`).join('')+'</div><div class="items">';
  h+=S.menu.filter(m=>!cf||m.cat==cf).map(m=>{const q=o[m.id]||0;
-  return `<div class="it ${q?'sel':''}" role="button" tabindex="0" onclick="add(${m.id},1)"><b>${E(m.name)}</b><small>${T(m.price)}</small>${q?`<span class="bd">${fa(q)}</span><button class="mn" onclick="event.stopPropagation();add(${m.id},-1)" aria-label="کم">−</button>`:''}</div>`}).join('');
- return h+'</div>'+(S.menu.length?'':'<p class="empty">منو خالی است. از بخش «منو» غذا اضافه کنید.</p>')
+  return `<div class="it ${q?'sel':''}" role="button" tabindex="0" onclick="add(${m.id},1)">${m.img?`<img src="${m.img}" alt="">`:`<div class="ph">${E([...m.name][0]||'')}</div>`}<div class="cap"><b>${E(m.name)}</b><small>${T(m.price)}</small></div>${q?`<span class="bd">${fa(q)}</span><button class="mn" onclick="event.stopPropagation();add(${m.id},-1)" aria-label="کم">−</button>`:''}</div>`}).join('');
+ return h+'</div>'+(S.menu.length?'':'<p class="empty">منو خالی است. از تنظیمات، بخش منو، غذا اضافه کنید.</p>')
 }
 function add(id,d){const o=S.orders[cur]=S.orders[cur]||{};o[id]=(o[id]||0)+d;if(o[id]<=0)delete o[id];if(!Object.keys(o).length)delete S.orders[cur];save();render();if($('#sh').classList.contains('open'))openOrder()}
 function openOrder(){
  const o=S.orders[cur]||{};
  if(!cnt(o))return closeSheet();
  const rows=Object.entries(o).map(([id,q])=>{const m=S.menu.find(x=>x.id==id);return m?`<div class="li"><div><b>${E(m.name)}</b><small>${T(m.price)}</small></div><div class="qty"><button onclick="add(${m.id},-1)" aria-label="کم">−</button><span>${fa(q)}</span><button onclick="add(${m.id},1)" aria-label="زیاد">+</button></div></div>`:''}).join('');
- sheet(`<h2>سفارش ${curLb()}</h2>${rows}<div class="tot"><span>جمع</span><b>${T(ordTotal(o))}</b></div><div class="row"><button class="pri" onclick="pay()">پرداخت و چاپ فیش</button></div><div class="row"><button class="ghost" onclick="closeSheet()">ادامه سفارش</button><button class="danger" onclick="clr()">لغو سفارش</button></div>`)
+ sheet(`<h2>سفارش ${curLb()}</h2>${rows}<div class="tot"><span>جمع</span><b>${T(ordTotal(o))}</b></div><div class="row"><button class="pri" onclick="pay()">پرداخت و چاپ فیش</button></div><div class="row"><button class="ghost" onclick="closeSheet();go('order')">افزودن غذا</button><button class="danger" onclick="clr()">لغو سفارش</button></div>`)
 }
 function clr(){delete S.orders[cur];save();closeSheet();render()}
 function pay(){
@@ -196,7 +221,7 @@ function fdel(){FC.onDel();save();closeSheet();render()}
 /* menu */
 function vMenu(){
  return '<h1>منو</h1>'+(S.menu.map(m=>{const v=S.inv.find(x=>x.id==m.inv);
-  return `<button class="li" onclick="editMenu(${m.id})"><div><b>${E(m.name)}</b><small>${E(m.cat)}${v?' - هر پرس '+fa(m.use)+' '+E(v.unit)+' '+E(v.name):''}</small></div><span>${T(m.price)}</span></button>`}).join('')||'<p class="empty">هنوز غذایی اضافه نکرده‌اید.</p>')+'<button class="pri wide" onclick="editMenu()">افزودن غذا</button><button class="ghost wide" onclick="editName()">نام روی فیش: '+E(S.name)+'</button>'
+  return `<button class="li" onclick="editMenu(${m.id})">${m.img?`<img src="${m.img}" alt="" style="width:50px;height:50px;border-radius:15px;object-fit:cover">`:''}<div style="flex:1"><b>${E(m.name)}</b><small>${E(m.cat)}${v?' - هر پرس '+fa(m.use)+' '+E(v.unit)+' '+E(v.name):''}</small></div><span>${T(m.price)}</span></button>`}).join('')||'<p class="empty">هنوز غذایی اضافه نکرده‌اید.</p>')+'<button class="pri wide" onclick="editMenu()">افزودن غذا</button>'
 }
 function editName(){form('نام روی فیش',[{k:'n',l:'نام رستوران',v:S.name}],d=>{if(!d.n.trim())return 'نام را وارد کنید';S.name=d.n.trim()})}
 function editMenu(id){
@@ -208,9 +233,12 @@ function editMenu(id){
   {k:'inv',l:'کسر از انبار',v:m.inv,o:[['','هیچ‌کدام'],...S.inv.map(x=>[x.id,x.name])]},
   {k:'use',l:'مقدار مصرف برای هر پرس',v:m.use,t:'number'}],
  d=>{if(!d.name.trim()||!(+d.price>0))return 'نام و قیمت غذا را وارد کنید';
-  const r={id:m.id||S.nid++,name:d.name.trim(),price:+d.price,cat:d.cat.trim()||'غذای اصلی',inv:d.inv?+d.inv:'',use:+d.use||0};
+  const r={id:m.id||S.nid++,name:d.name.trim(),price:+d.price,cat:d.cat.trim()||'غذای اصلی',inv:d.inv?+d.inv:'',use:+d.use||0,img:tmpImg};
   if(id)Object.assign(m,r);else S.menu.push(r)},
- id?()=>{S.menu=S.menu.filter(x=>x.id!=id);Object.values(S.orders).forEach(o=>delete o[id])}:null)
+ id?()=>{S.menu=S.menu.filter(x=>x.id!=id);Object.values(S.orders).forEach(o=>delete o[id])}:null);
+ tmpImg=m.img||'';
+ $('#sh .row').insertAdjacentHTML('beforebegin','<label>عکس غذا<input type="file" accept="image/*" onchange="pickImg(this)"></label><div id="pv"></div>');
+ $('#pv').innerHTML=pvHTML()
 }
 
 /* inventory */
@@ -232,15 +260,31 @@ function editInv(id){
  id?()=>{S.inv=S.inv.filter(x=>x.id!=id);S.menu.forEach(m=>{if(m.inv==id)m.inv=''})}:null)
 }
 
+/* food photo */
+let tmpImg='';
+function pvHTML(){return tmpImg?`<img src="${tmpImg}" alt="" style="width:96px;height:96px;object-fit:cover;border-radius:22px;display:block;margin:8px 0"><button class="ghost" style="padding:6px 14px" onclick="tmpImg='';$('#pv').innerHTML=pvHTML()">حذف عکس</button>`:''}
+function pickImg(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas'),s=480;c.width=c.height=s;const k=Math.max(s/im.width,s/im.height),w=im.width*k,h=im.height*k;c.getContext('2d').drawImage(im,(s-w)/2,(s-h)/2,w,h);tmpImg=c.toDataURL('image/jpeg',0.8);$('#pv').innerHTML=pvHTML()};im.onerror=()=>toast('این فایل عکس معتبر نیست');im.src=r.result};r.readAsDataURL(f)}
+
+/* settings + live orders */
+let st='menu';
+const GEAR='<button class="gear" onclick="go(\'set\')" aria-label="تنظیمات"><svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg></button>';
+function vSet(){
+ return '<h1>تنظیمات</h1><div class="chips">'+[['menu','منو'],['inv','انبار'],['rc','فیش']].map(([k,n])=>`<button class="ch ${st==k?'on':''}" onclick="st='${k}';render()">${n}</button>`).join('')+'</div>'+(st=='menu'?vMenu():st=='inv'?vInv():`<h2>فیش</h2><p class="empty">نام رستوران که بالای فیش چاپ می‌شود.</p><button class="ghost wide" onclick="editName()">نام روی فیش: ${E(S.name)}</button>`)
+}
+function vLive(){
+ const ks=Object.keys(S.orders);
+ return '<h1>سفارش‌های جاری</h1>'+(ks.map(k=>{const o=S.orders[k];return `<button class="li" onclick="cur='${k}';openOrder()"><div><b>${k=='T'?'بیرون‌بر':'میز '+fa(k)}</b><small>${fa(cnt(o))} آیتم</small></div><span>${T(ordTotal(o))}</span></button>`}).join('')||'<p class="empty">سفارش بازی وجود ندارد. با دکمه + سفارش جدید ثبت کنید.</p>')
+}
+
 /* report */
 function vRep(){
  const d=new Date().toDateString(),td=S.sales.map((s,i)=>({...s,i})).filter(s=>new Date(s.t).toDateString()==d);
  const sum=td.reduce((x,s)=>x+s.total,0),c={};
  td.forEach(s=>s.items.forEach(i=>c[i.n]=(c[i.n]||0)+i.q));
  const top=Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,5),mx=top[0]?top[0][1]:1;
- return `<h1>فروش امروز</h1><div class="sum"><div><small>جمع فروش</small><b>${T(sum)}</b></div><div><small>تعداد سفارش</small><b>${fa(td.length)}</b></div><div><small>میانگین هر سفارش</small><b>${T(td.length?Math.round(sum/td.length):0)}</b></div></div>`
+ return `<h1>تسویه‌شده‌ها</h1><div class="sum"><div><small>جمع فروش</small><b>${T(sum)}</b></div><div><small>تعداد سفارش</small><b>${fa(td.length)}</b></div><div><small>میانگین هر سفارش</small><b>${T(td.length?Math.round(sum/td.length):0)}</b></div></div>`
  +'<h2>پرفروش‌ترین‌ها</h2>'+(top.map(([n,q])=>`<div class="bar"><span>${E(n)}</span><div class="tr"><i style="width:${q/mx*100}%"></i></div><em>${fa(q)}</em></div>`).join('')||'<p class="empty">امروز هنوز فروشی ثبت نشده. با «پرداخت و چاپ فیش» فروش ثبت می‌شود.</p>')
- +(td.length?'<h2>آخرین سفارش‌ها (برای چاپ دوباره بزنید)</h2>':'')+td.slice(-8).reverse().map(s=>`<button class="li" onclick="reprint(${s.i})"><div><b>${E(lb(s.table))}</b><small>${new Date(s.t).toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'})}، ${s.items.map(i=>E(i.n)+' ×'+fa(i.q)).join('، ')}</small></div><span>${T(s.total)}</span></button>`).join('')
+ +(td.length?'<h2>آخرین سفارش‌ها (برای چاپ دوباره بزنید)</h2>':'')+td.slice().reverse().map(s=>`<button class="li" onclick="reprint(${s.i})"><div><b>${E(lb(s.table))}</b><small>${new Date(s.t).toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'})}، ${s.items.map(i=>E(i.n)+' ×'+fa(i.q)).join('، ')}</small></div><span>${T(s.total)}</span></button>`).join('')
 }
 render();
 </script>
