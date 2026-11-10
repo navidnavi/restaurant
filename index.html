@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>مدیریت رستوران</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f5f4;--card:#fff;--ink:#101d19;--mute:#64756e;--line:#e1e8e4;--acc:#e2452f;--accfg:#fff;--ok:#12805c;--okfg:#fff;--warn:#b9770e;--sh:0 1px 2px rgba(16,29,25,.06),0 4px 14px rgba(16,29,25,.05);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0c1311;--card:#151f1b;--ink:#e8f1ec;--mute:#93a69c;--line:#243029;--acc:#f0604b;--accfg:#1a0705;--ok:#2fb98a;--okfg:#04170f;--warn:#e6a940;--sh:none}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0c1311;--card:#151f1b;--ink:#e8f1ec;--mute:#93a69c;--line:#243029;--acc:#f0604b;--accfg:#1a0705;--ok:#2fb98a;--okfg:#04170f;--warn:#e6a940;--sh:none}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.7 'Vazirmatn',Tahoma,system-ui,sans-serif;padding-bottom:calc(150px + env(safe-area-inset-bottom,0px))}
+#main{max-width:680px;margin:0 auto;padding:6px 16px}
+h1{font-size:23px;font-weight:800;margin:14px 0 10px}
+h2{font-size:16px;font-weight:600;margin:22px 0 8px}
+small{display:block;color:var(--mute);font-size:12.5px;line-height:1.5}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+:focus-visible{outline:2px solid var(--ok);outline-offset:2px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:4px 0 10px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.ch{flex:none;padding:7px 15px;border-radius:99px;background:var(--card);box-shadow:var(--sh);font-size:14px;position:relative;white-space:nowrap}
+.ch.on{background:var(--ink);color:var(--bg);font-weight:600}
+.ch.dot::after{content:"";position:absolute;top:3px;inset-inline-start:3px;width:9px;height:9px;border-radius:50%;background:var(--acc)}
+.items{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:520px){.items{grid-template-columns:repeat(3,1fr)}}
+.it{position:relative;text-align:start;padding:14px 14px 12px;border-radius:16px;background:var(--card);box-shadow:var(--sh);min-height:92px;display:flex;flex-direction:column;justify-content:space-between;gap:6px;width:100%;border:2px solid transparent}
+.it b{font-weight:600;line-height:1.4}
+.it small{font-size:13px}
+.it.sel{border-color:var(--ok)}
+.bd{position:absolute;top:8px;inset-inline-end:8px;min-width:26px;height:26px;border-radius:13px;background:var(--ok);color:var(--okfg);font-weight:700;text-align:center;line-height:26px;font-size:13px;padding:0 6px}
+.mn{position:absolute;bottom:8px;inset-inline-end:8px;width:30px;height:30px;border-radius:15px;background:var(--bg);font-size:18px;line-height:1}
+.cart{position:fixed;inset-inline:0;bottom:calc(64px + env(safe-area-inset-bottom,0px));padding:0 16px;z-index:9;pointer-events:none}
+.cart button{pointer-events:auto;display:flex;justify-content:space-between;width:100%;max-width:648px;margin:auto;padding:14px 18px;border-radius:16px;background:var(--ok);color:var(--okfg);font-weight:600;box-shadow:0 6px 20px rgba(0,0,0,.2)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:520px){.grid{grid-template-columns:repeat(3,1fr)}}
+.tb{display:flex;flex-direction:column;gap:2px;align-items:flex-start;text-align:start;padding:14px;border-radius:16px;background:var(--card);box-shadow:var(--sh);min-height:88px}
+.tb b{font-size:17px}.tb span{font-size:12.5px;color:var(--mute)}
+.tb.busy{background:var(--acc);color:var(--accfg)}
+.tb.busy span{color:var(--accfg);opacity:.9}
+.row{display:flex;gap:10px;margin-top:14px}
+.row>button{flex:1}
+.pri,.ghost,.danger{padding:13px 14px;border-radius:12px;font-weight:600}
+.pri{background:var(--ok);color:var(--okfg)}
+.ghost{background:var(--card);box-shadow:var(--sh)}
+.danger{color:var(--acc);background:var(--card);box-shadow:inset 0 0 0 1.5px var(--acc)}
+.wide{display:block;width:100%;margin-top:14px}
+.li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);width:100%;text-align:start}
+.li b{font-weight:600}
+.li.low{border-inline-start:4px solid var(--warn);padding-inline-start:10px}
+.nm{flex:1;text-align:start}
+.qty{display:flex;align-items:center;gap:6px}
+.qty button{width:38px;height:38px;border-radius:12px;background:var(--bg);font-size:20px;line-height:1}
+.qty span{min-width:26px;text-align:center;font-weight:600}
+.tot{display:flex;justify-content:space-between;padding:14px 0 0;font-size:18px}
+.alert{background:var(--card);box-shadow:inset 0 0 0 1.5px var(--warn);color:var(--warn);padding:8px 12px;border-radius:12px;margin:0 0 6px}
+.empty{color:var(--mute)}
+.sum{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sum div{background:var(--card);box-shadow:var(--sh);border-radius:16px;padding:12px 14px}
+.sum div:first-child{grid-column:1/-1;background:var(--ok);color:var(--okfg)}
+.sum div:first-child small{color:inherit;opacity:.85}
+.sum b{font-size:19px;font-weight:800}
+.bar{display:grid;grid-template-columns:7.5rem 1fr 2rem;gap:8px;align-items:center;padding:4px 0}
+.bar .tr{height:10px;background:var(--line);border-radius:5px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok)}
+.bar em{font-style:normal;color:var(--mute);text-align:end}
+nav{position:fixed;inset:auto 0 0 0;display:flex;background:var(--card);box-shadow:0 -1px 0 var(--line);padding-bottom:env(safe-area-inset-bottom,0px);z-index:10}
+nav button{flex:1;padding:8px 0 7px;font-size:11.5px;color:var(--mute);display:flex;flex-direction:column;align-items:center}
+nav button span{font-size:20px;line-height:1.3}
+nav button.on{color:var(--ok);font-weight:600}
+#sh{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center;z-index:20}
+#sh.open{display:flex}
+.in{background:var(--card);width:100%;max-width:680px;max-height:92%;overflow:auto;border-radius:22px 22px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px));position:relative}
+.in h2{margin-top:2px}
+.x{position:absolute;top:10px;inset-inline-end:10px;width:36px;height:36px;border-radius:18px;font-size:18px;color:var(--mute)}
+label{display:block;margin-top:12px;font-size:13px;color:var(--mute)}
+input,select{display:block;width:100%;margin-top:4px;padding:11px 12px;border:1.5px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink)}
+.err{color:var(--acc);min-height:1.2em;font-size:13px}
+#toast{position:fixed;inset-inline:16px;bottom:calc(130px + env(safe-area-inset-bottom,0px));max-width:420px;margin:auto;background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:12px;text-align:center;opacity:0;pointer-events:none;transition:opacity .2s;z-index:30}
+#toast.on{opacity:1}
+.rc{background:#fff;color:#000;padding:14px;border-radius:10px;max-width:300px;margin:6px auto;font-size:13px;line-height:1.6;box-shadow:0 0 0 1px var(--line)}
+.rc h3{text-align:center;margin:0 0 4px;font-size:17px}
+.rc p{margin:2px 0;text-align:center;font-size:12px}
+.rc table{width:100%;border-collapse:collapse;margin:8px 0;border-top:1px dashed #000;border-bottom:1px dashed #000}
+.rc td{padding:3px 0}.rc td:nth-child(2){text-align:center}.rc td:last-child{text-align:end}
+.rc .tt{display:flex;justify-content:space-between;font-size:15px;font-weight:700}
+#rc{display:none}
+@media print{
+ @page{size:80mm auto;margin:3mm}
+ body>*{display:none!important}
+ body>#rc{display:block!important}
+ body{padding:0;background:#fff}
+ #rc .rc{box-shadow:none;max-width:none;margin:0;padding:0}
+}
+@media(prefers-reduced-motion:reduce){#toast{transition:none}}
+</style>
+</head>
+<body>
+<div id="main"></div>
+<div id="cartbar" class="cart"></div>
+<nav>
+<button data-t="order" onclick="go('order')"><span>🧾</span>سفارش</button>
+<button data-t="tables" onclick="go('tables')"><span>🍽</span>میزها</button>
+<button data-t="menu" onclick="go('menu')"><span>📋</span>منو</button>
+<button data-t="inv" onclick="go('inv')"><span>📦</span>انبار</button>
+<button data-t="rep" onclick="go('rep')"><span>📊</span>گزارش</button>
+</nav>
+<div id="sh" onclick="if(event.target===this)closeSheet()"></div>
+<div id="toast" role="status"></div>
+<div id="rc"></div>
+<script>
+const $=s=>document.querySelector(s);
+const fa=n=>Number(n).toLocaleString('fa-IR',{maximumFractionDigits:2});
+const T=n=>fa(n)+' تومان';
+const E=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let S=null;
+try{S=JSON.parse(localStorage.getItem('rest1'))}catch(e){}
+if(!S)S={tables:8,orders:{},nid:100,sales:[],
+menu:[{id:1,name:'چلوکباب کوبیده',price:250000,inv:1,use:0.2,cat:'غذای اصلی'},{id:2,name:'جوجه‌کباب',price:230000,inv:2,use:0.25,cat:'غذای اصلی'},{id:3,name:'قورمه‌سبزی',price:200000,inv:3,use:0.15,cat:'غذای اصلی'},{id:4,name:'زرشک‌پلو با مرغ',price:190000,inv:2,use:0.25,cat:'غذای اصلی'},{id:5,name:'سالاد شیرازی',price:40000,inv:'',use:0,cat:'پیش‌غذا'},{id:6,name:'دوغ',price:25000,inv:5,use:1,cat:'نوشیدنی'},{id:7,name:'نوشابه',price:20000,inv:4,use:1,cat:'نوشیدنی'},{id:8,name:'چای',price:15000,inv:'',use:0,cat:'نوشیدنی'}],
+inv:[{id:1,name:'گوشت چرخ‌کرده',qty:12,unit:'کیلو',min:3},{id:2,name:'مرغ',qty:15,unit:'کیلو',min:4},{id:3,name:'برنج',qty:20,unit:'کیلو',min:5},{id:4,name:'نوشابه',qty:24,unit:'عدد',min:6},{id:5,name:'دوغ',qty:18,unit:'عدد',min:6}]};
+S.menu.forEach(m=>m.cat=m.cat||'غذای اصلی');S.rn=S.rn||1;S.name=S.name||'رستوران من';
+const save=()=>{try{localStorage.setItem('rest1',JSON.stringify(S))}catch(e){}};
+let tab='order',cur='1',cf='';
+const lb=t=>typeof t=='number'?'میز '+fa(t):t;
+const curLb=()=>cur=='T'?'بیرون‌بر':'میز '+fa(cur);
+const cnt=o=>Object.values(o||{}).reduce((a,b)=>a+b,0);
+function go(t){tab=t;render();scrollTo(0,0)}
+function render(){
+ document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===tab));
+ $('#main').innerHTML=({order:vOrder,tables:vTables,menu:vMenu,inv:vInv,rep:vRep})[tab]();
+ const o=S.orders[cur],n=cnt(o);
+ $('#cartbar').innerHTML=tab=='order'&&n?`<button onclick="openOrder()"><span>${curLb()}: ${fa(n)} آیتم</span><b>${T(ordTotal(o))}</b></button>`:'';
+}
+function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),2400)}
+function sheet(h){const e=$('#sh'),p=e.querySelector('.in'),st=p?p.scrollTop:0;
+ e.innerHTML='<div class="in"><button class="x" onclick="closeSheet()" aria-label="بستن">✕</button>'+h+'</div>';
+ e.classList.add('open');e.querySelector('.in').scrollTop=st}
+function closeSheet(){const e=$('#sh');e.classList.remove('open');e.innerHTML=''}
+
+/* order entry (home) */
+function ordTotal(o){return Object.entries(o||{}).reduce((s,[id,q])=>{const m=S.menu.find(x=>x.id==id);return s+(m?m.price*q:0)},0)}
+function selT(k){cur=String(k);tab='order';render();scrollTo(0,0)}
+function vOrder(){
+ const o=S.orders[cur]||{},cats=[...new Set(S.menu.map(m=>m.cat))];
+ let h='<h1>ثبت سفارش</h1><div class="chips"><button class="ch '+(cur=='T'?'on ':'')+(S.orders.T?'dot':'')+'" onclick="selT(\'T\')">بیرون‌بر</button>';
+ for(let i=1;i<=S.tables;i++)h+=`<button class="ch ${cur==i?'on':''} ${S.orders[i]?'dot':''}" onclick="selT(${i})">میز ${fa(i)}</button>`;
+ h+='</div><div class="chips"><button class="ch '+(cf?'':'on')+'" onclick="cf=\'\';render()">همه</button>'+cats.map(c=>`<button class="ch ${cf==c?'on':''}" onclick="cf=this.dataset.c;render()" data-c="${E(c)}">${E(c)}</button>`).join('')+'</div><div class="items">';
+ h+=S.menu.filter(m=>!cf||m.cat==cf).map(m=>{const q=o[m.id]||0;
+  return `<div class="it ${q?'sel':''}" role="button" tabindex="0" onclick="add(${m.id},1)"><b>${E(m.name)}</b><small>${T(m.price)}</small>${q?`<span class="bd">${fa(q)}</span><button class="mn" onclick="event.stopPropagation();add(${m.id},-1)" aria-label="کم">−</button>`:''}</div>`}).join('');
+ return h+'</div>'+(S.menu.length?'':'<p class="empty">منو خالی است. از بخش «منو» غذا اضافه کنید.</p>')
+}
+function add(id,d){const o=S.orders[cur]=S.orders[cur]||{};o[id]=(o[id]||0)+d;if(o[id]<=0)delete o[id];if(!Object.keys(o).length)delete S.orders[cur];save();render();if($('#sh').classList.contains('open'))openOrder()}
+function openOrder(){
+ const o=S.orders[cur]||{};
+ if(!cnt(o))return closeSheet();
+ const rows=Object.entries(o).map(([id,q])=>{const m=S.menu.find(x=>x.id==id);return m?`<div class="li"><div><b>${E(m.name)}</b><small>${T(m.price)}</small></div><div class="qty"><button onclick="add(${m.id},-1)" aria-label="کم">−</button><span>${fa(q)}</span><button onclick="add(${m.id},1)" aria-label="زیاد">+</button></div></div>`:''}).join('');
+ sheet(`<h2>سفارش ${curLb()}</h2>${rows}<div class="tot"><span>جمع</span><b>${T(ordTotal(o))}</b></div><div class="row"><button class="pri" onclick="pay()">پرداخت و چاپ فیش</button></div><div class="row"><button class="ghost" onclick="closeSheet()">ادامه سفارش</button><button class="danger" onclick="clr()">لغو سفارش</button></div>`)
+}
+function clr(){delete S.orders[cur];save();closeSheet();render()}
+function pay(){
+ const o=S.orders[cur];if(!o||!cnt(o))return;
+ const items=[];let total=0;
+ for(const [id,q] of Object.entries(o)){const m=S.menu.find(x=>x.id==id);if(!m)continue;
+  items.push({n:m.name,q,p:m.price});total+=m.price*q;
+  const v=S.inv.find(x=>x.id==m.inv);if(v)v.qty=Math.max(0,+(v.qty-m.use*q).toFixed(3))}
+ const s={t:Date.now(),no:S.rn++,table:cur=='T'?'بیرون‌بر':'میز '+fa(cur),items,total};
+ S.sales.push(s);delete S.orders[cur];save();render();showReceipt(s)
+}
+
+/* receipt */
+function rcHTML(s){const d=new Date(s.t);
+ return `<div class="rc"><h3>${E(S.name)}</h3><p>${d.toLocaleDateString('fa-IR')} - ${d.toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'})}</p><p>فیش شماره ${fa(s.no||0)} | ${E(lb(s.table))}</p><table>${s.items.map(i=>`<tr><td>${E(i.n)}</td><td>×${fa(i.q)}</td><td>${fa(i.p*i.q)}</td></tr>`).join('')}</table><div class="tt"><span>جمع (تومان)</span><span>${fa(s.total)}</span></div><p style="margin-top:8px">ممنون از انتخاب شما</p></div>`}
+function showReceipt(s){const h=rcHTML(s);$('#rc').innerHTML=h;
+ sheet(`<h2>فیش</h2>${h}<div class="row"><button class="pri" onclick="doPrint()">چاپ فیش</button><button class="ghost" onclick="closeSheet()">بستن</button></div>`)}
+function doPrint(){try{window.print()}catch(e){toast('چاپ در این نمایش ممکن نیست؛ لینک را در مرورگر باز کنید')}}
+function reprint(i){showReceipt(S.sales[i])}
+
+/* tables */
+function vTables(){
+ let h='<h1>میزها</h1><div class="grid">';
+ for(let i=1;i<=S.tables;i++){const o=S.orders[i],n=cnt(o);
+  h+=`<button class="tb ${n?'busy':''}" onclick="selT(${i})"><b>میز ${fa(i)}</b><span>${n?fa(n)+' آیتم':'خالی'}</span><span>${n?T(ordTotal(o)):''}</span></button>`}
+ return h+'</div><div class="row"><button class="ghost" onclick="S.tables++;save();render()">افزودن میز</button><button class="ghost" onclick="rmTable()">حذف آخرین میز</button></div>'
+}
+function rmTable(){if(S.tables<=1)return;if(S.orders[S.tables])return toast('میز آخر سفارش باز دارد');if(cur==S.tables)cur='1';S.tables--;save();render()}
+
+/* generic form */
+let FC;
+function form(t,f,onSave,onDel){FC={f,onSave,onDel};
+ sheet(`<h2>${t}</h2><div id="fe" class="err"></div>`+f.map(x=>`<label>${x.l}${x.o?`<select id="f_${x.k}">${x.o.map(o=>`<option value="${o[0]}" ${String(o[0])==String(x.v)?'selected':''}>${E(o[1])}</option>`).join('')}</select>`:`<input id="f_${x.k}" type="${x.t||'text'}" ${x.t=='number'?'step="any" inputmode="decimal"':''} value="${E(x.v)}">`}</label>`).join('')+`<div class="row"><button class="pri" onclick="fsave()">ذخیره</button>${onDel?'<button class="danger" onclick="fdel()">حذف</button>':''}</div>`)}
+function fsave(){const d={};FC.f.forEach(x=>d[x.k]=$('#f_'+x.k).value);const e=FC.onSave(d);if(e){$('#fe').textContent=e;return}save();closeSheet();render()}
+function fdel(){FC.onDel();save();closeSheet();render()}
+
+/* menu */
+function vMenu(){
+ return '<h1>منو</h1>'+(S.menu.map(m=>{const v=S.inv.find(x=>x.id==m.inv);
+  return `<button class="li" onclick="editMenu(${m.id})"><div><b>${E(m.name)}</b><small>${E(m.cat)}${v?' - هر پرس '+fa(m.use)+' '+E(v.unit)+' '+E(v.name):''}</small></div><span>${T(m.price)}</span></button>`}).join('')||'<p class="empty">هنوز غذایی اضافه نکرده‌اید.</p>')+'<button class="pri wide" onclick="editMenu()">افزودن غذا</button><button class="ghost wide" onclick="editName()">نام روی فیش: '+E(S.name)+'</button>'
+}
+function editName(){form('نام روی فیش',[{k:'n',l:'نام رستوران',v:S.name}],d=>{if(!d.n.trim())return 'نام را وارد کنید';S.name=d.n.trim()})}
+function editMenu(id){
+ const m=S.menu.find(x=>x.id==id)||{name:'',price:'',inv:'',use:1,cat:cf||'غذای اصلی'};
+ form(id?'ویرایش غذا':'غذای جدید',[
+  {k:'name',l:'نام غذا',v:m.name},
+  {k:'price',l:'قیمت (تومان)',v:m.price,t:'number'},
+  {k:'cat',l:'دسته‌بندی (مثلاً نوشیدنی)',v:m.cat},
+  {k:'inv',l:'کسر از انبار',v:m.inv,o:[['','هیچ‌کدام'],...S.inv.map(x=>[x.id,x.name])]},
+  {k:'use',l:'مقدار مصرف برای هر پرس',v:m.use,t:'number'}],
+ d=>{if(!d.name.trim()||!(+d.price>0))return 'نام و قیمت غذا را وارد کنید';
+  const r={id:m.id||S.nid++,name:d.name.trim(),price:+d.price,cat:d.cat.trim()||'غذای اصلی',inv:d.inv?+d.inv:'',use:+d.use||0};
+  if(id)Object.assign(m,r);else S.menu.push(r)},
+ id?()=>{S.menu=S.menu.filter(x=>x.id!=id);Object.values(S.orders).forEach(o=>delete o[id])}:null)
+}
+
+/* inventory */
+function vInv(){
+ const low=S.inv.filter(x=>x.qty<=x.min).length;
+ return '<h1>انبار</h1>'+(low?`<p class="alert">${fa(low)} کالا به حد هشدار رسیده است</p>`:'')+S.inv.map(v=>`<div class="li ${v.qty<=v.min?'low':''}"><button class="nm" onclick="editInv(${v.id})"><b>${E(v.name)}</b><small>${fa(v.qty)} ${E(v.unit)}${v.qty<=v.min?' (کمتر از حد هشدار)':''}</small></button><div class="qty"><button onclick="adj(${v.id},-1)" aria-label="کم">−</button><button onclick="adj(${v.id},1)" aria-label="زیاد">+</button></div></div>`).join('')+'<button class="pri wide" onclick="editInv()">افزودن کالا</button>'
+}
+function adj(id,d){const v=S.inv.find(x=>x.id==id);v.qty=Math.max(0,v.qty+d);save();render()}
+function editInv(id){
+ const v=S.inv.find(x=>x.id==id)||{name:'',qty:0,unit:'کیلو',min:1};
+ form(id?'ویرایش کالا':'کالای جدید',[
+  {k:'name',l:'نام کالا',v:v.name},
+  {k:'qty',l:'موجودی فعلی',v:v.qty,t:'number'},
+  {k:'unit',l:'واحد (کیلو، عدد، ...)',v:v.unit},
+  {k:'min',l:'حد هشدار',v:v.min,t:'number'}],
+ d=>{if(!d.name.trim())return 'نام کالا را وارد کنید';
+  const r={id:v.id||S.nid++,name:d.name.trim(),qty:+d.qty||0,unit:d.unit.trim()||'عدد',min:+d.min||0};
+  if(id)Object.assign(v,r);else S.inv.push(r)},
+ id?()=>{S.inv=S.inv.filter(x=>x.id!=id);S.menu.forEach(m=>{if(m.inv==id)m.inv=''})}:null)
+}
+
+/* report */
+function vRep(){
+ const d=new Date().toDateString(),td=S.sales.map((s,i)=>({...s,i})).filter(s=>new Date(s.t).toDateString()==d);
+ const sum=td.reduce((x,s)=>x+s.total,0),c={};
+ td.forEach(s=>s.items.forEach(i=>c[i.n]=(c[i.n]||0)+i.q));
+ const top=Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,5),mx=top[0]?top[0][1]:1;
+ return `<h1>فروش امروز</h1><div class="sum"><div><small>جمع فروش</small><b>${T(sum)}</b></div><div><small>تعداد سفارش</small><b>${fa(td.length)}</b></div><div><small>میانگین هر سفارش</small><b>${T(td.length?Math.round(sum/td.length):0)}</b></div></div>`
+ +'<h2>پرفروش‌ترین‌ها</h2>'+(top.map(([n,q])=>`<div class="bar"><span>${E(n)}</span><div class="tr"><i style="width:${q/mx*100}%"></i></div><em>${fa(q)}</em></div>`).join('')||'<p class="empty">امروز هنوز فروشی ثبت نشده. با «پرداخت و چاپ فیش» فروش ثبت می‌شود.</p>')
+ +(td.length?'<h2>آخرین سفارش‌ها (برای چاپ دوباره بزنید)</h2>':'')+td.slice(-8).reverse().map(s=>`<button class="li" onclick="reprint(${s.i})"><div><b>${E(lb(s.table))}</b><small>${new Date(s.t).toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'})}، ${s.items.map(i=>E(i.n)+' ×'+fa(i.q)).join('، ')}</small></div><span>${T(s.total)}</span></button>`).join('')
+}
+render();
+</script>
+</body>
+</html>
