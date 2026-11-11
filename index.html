@@ -122,6 +122,68 @@ input,select{display:block;width:100%;margin-top:4px;padding:11px 12px;border:1p
 .qty button:first-child{background:rgba(226,69,47,.16);color:var(--acc);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:inset 0 0 0 1px rgba(226,69,47,.35)}
 .qty button:last-child{background:rgba(18,128,92,.16);background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:inset 0 0 0 1px rgba(18,128,92,.35)}
 .qty span{display:inline-block}
+:root[data-theme="ios"] nav{background:rgba(28,28,30,.58);box-shadow:0 8px 28px rgba(0,0,0,.28),inset 0 0 0 1px rgba(255,255,255,.18)}
+:root[data-theme="ios"] nav button,:root[data-theme="ios"] nav button.on{color:#fff}
+:root[data-theme="ios"] nav button.on{background:rgba(255,255,255,.2)}
+.qty button:first-child{background:var(--bg);color:var(--ink);box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+.danger{background:var(--card);color:var(--ink);box-shadow:var(--sh)}
+button{-webkit-tap-highlight-color:transparent}
+h1{font-size:30px;letter-spacing:-.3px}
+.pri,.ghost,.danger{border-radius:14px;padding:14px 16px;transition:transform .12s,opacity .12s}
+.pri:active,.ghost:active,.danger:active,.ch:active,.li:active,.imgbtn:active{transform:scale(.97);opacity:.85}
+.ghost,.imgbtn{background:rgba(18,128,92,.13);background:color-mix(in srgb,var(--ok) 13%,transparent);color:var(--ok);box-shadow:none}
+.ch{background:rgba(120,120,128,.14);box-shadow:none}
+.ch.on{background:var(--ok);color:var(--okfg)}
+input,select{background:rgba(120,120,128,.12);border:0;border-radius:12px;padding:12px 14px}
+.li{background:var(--card);border:0;border-radius:16px;padding:12px 14px;margin-bottom:8px;box-shadow:var(--sh)}
+.in .li{background:var(--bg);box-shadow:none}
+.in{border-radius:28px 28px 0 0}
+.in::before{content:"";display:block;width:38px;height:5px;border-radius:3px;background:rgba(120,120,128,.4);margin:-8px auto 12px}
+.cart button{border-radius:18px}
+.cust .ex{grid-column:1/-1}
+.mn{background:rgba(255,255,255,.92);color:#101d19;border:0;-webkit-backdrop-filter:none;backdrop-filter:none}
+nav button{flex:1 1 0;flex-direction:row;align-items:center;justify-content:center;gap:0;padding:12px 0;min-width:0;transition:flex-grow .45s cubic-bezier(.3,1.25,.4,1),background-color .3s,color .3s}
+nav button .nl{display:inline-block;max-width:0;opacity:0;overflow:hidden;white-space:nowrap;font-size:12.5px;font-weight:600;transition:max-width .45s cubic-bezier(.3,1.25,.4,1),opacity .3s,margin .3s}
+nav button.on{flex-grow:2.7;background:rgba(18,128,92,.16);background:color-mix(in srgb,var(--ok) 16%,transparent)}
+nav button.on .nl{max-width:90px;opacity:1;margin-inline-start:7px}
+nav button.on svg{fill:rgba(18,128,92,.22);fill:color-mix(in srgb,currentColor 22%,transparent);stroke-width:2.1}
+nav svg{transition:transform .3s}
+nav button:active svg{transform:scale(.88)}
+.nb{left:auto;right:10px;top:4px}
+nav{left:8px;right:8px;max-width:620px;padding:5px;border-radius:32px}
+nav button{padding:15px 0;border-radius:27px}
+nav svg{width:31px;height:31px}
+nav button .nl{font-size:13.5px}
+nav button.on .nl{max-width:110px}
+.cart{bottom:calc(106px + env(safe-area-inset-bottom,0px))}
+#toast{bottom:calc(170px + env(safe-area-inset-bottom,0px))}
+.chev{width:34px;height:34px;flex:none;border-radius:50%;background:rgba(120,120,128,.16);display:flex;align-items:center;justify-content:center;position:relative;color:var(--ink)}
+.chev svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s}
+.chev.open svg{transform:rotate(180deg)}
+.chev.hasn::after{content:"";position:absolute;top:1px;inset-inline-end:1px;width:9px;height:9px;border-radius:50%;background:var(--ok)}
+.note{animation:fadeIn .25s}
+.bd{background:var(--ok);color:var(--okfg);border:0;-webkit-backdrop-filter:none;backdrop-filter:none}
+.cust{grid-template-columns:1fr 1fr 46px}
+.exb{border-radius:12px;background:rgba(120,120,128,.12);display:flex;align-items:center;justify-content:center;position:relative;color:var(--ink)}
+.exb.hasn::after{content:"";position:absolute;top:6px;inset-inline-end:6px;width:9px;height:9px;border-radius:50%;background:var(--ok)}
+.mini{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:99px;background:rgba(120,120,128,.14);font-size:13px;margin-top:10px}
+.pri,.cart button,.ch.on,.tot{background:var(--btn-bg,var(--ok))}
+.pri,.ghost,.danger,.imgbtn{border-radius:var(--btn-r,14px)}
+.cart button{border-radius:var(--btn-r,18px);box-shadow:var(--btn-sh,0 6px 20px rgba(0,0,0,.2))}
+.ch{border-radius:var(--btn-r,99px)}
+.qty button{border-radius:var(--btn-r,12px)}
+.pri,.cart button,.ch,.ghost,.danger,.imgbtn,.qty button{border:var(--btn-bw,0px) solid var(--btn-bc,transparent)}
+.pri,.ch.on,.ghost{box-shadow:var(--btn-sh,none)}
+.edt .pvw{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:14px;border-radius:16px;background:var(--bg)}
+.edt label{display:block;margin-top:12px}.edt .rw{display:flex;justify-content:space-between;color:var(--mute);font-size:13px}
+.edt input[type=range]{padding:0;height:30px;background:none;accent-color:var(--ok)}
+.edt input[type=color]{width:100%;height:42px;padding:3px}
+.chk{display:flex!important;align-items:center;gap:10px}.chk input{width:22px;height:22px;margin:0;padding:0;display:inline-block}
+.sw{width:34px;height:34px;border-radius:50%;margin-inline-end:8px;border:2px solid var(--card);box-shadow:0 0 0 1px var(--line)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){nav button,nav button .nl,.chev svg,.note{transition:none;animation:none}}
+.imgbtn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:8px;padding:14px;border-radius:14px;font-weight:600}
+.imgbtn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .up{animation:rUp .3s cubic-bezier(.2,.9,.3,1.2)}.dn{animation:rDn .3s cubic-bezier(.2,.9,.3,1.2)}
 @keyframes rUp{from{transform:translateY(70%);opacity:0}to{transform:none;opacity:1}}
 @keyframes rDn{from{transform:translateY(-70%);opacity:0}to{transform:none;opacity:1}}
@@ -494,6 +556,58 @@ function vSet(){
  else b=`<h2>اندازه فیش</h2><div class="chips"><button class="ch ${S.paper==57?'on':''}" onclick="S.paper=57;pref()">۵۷ میلی‌متر</button><button class="ch ${S.paper==80?'on':''}" onclick="S.paper=80;pref()">۸۰ میلی‌متر</button></div><h2>نام روی فیش</h2><button class="ghost wide" onclick="editName()">${E(S.name)}</button><h2>آدرس روی فیش</h2><button class="ghost wide" onclick="editAddr()">${E(S.addr||'ثبت نشده')}</button><h2>آشپزخانه</h2><button class="ghost wide" onclick="editKitchen()">شماره پیامک: ${E(S.kitchen||'ثبت نشده')}</button>`;
  return '<h1>تنظیمات</h1><div class="chips">'+[['menu','منو'],['inv','انبار'],['look','ظاهر'],['fee','فاکتور'],['rc','فیش']].map(([k,n])=>`<button class="ch ${st==k?'on':''}" onclick="st='${k}';render()">${n}</button>`).join('')+'</div>'+b}
 function splash(){const e=$('#splash');if(!e)return;$('#spt').innerHTML=S.name.split(' ').map((w,i)=>`<span style="animation-delay:${.3+i*.2}s">${E(w)}</span>`).join(' ');setTimeout(()=>{e.classList.add('out');setTimeout(()=>e.remove(),800)},2500)}
+/* v4 */
+S.accent=S.accent||'';
+const ACC={b:['آبی','#2196F3'],r:['قرمز','#F44336'],o:['نارنجی','#FF9800'],p:['صورتی','#E91E63']};
+const ap0=applyPrefs;applyPrefs=function(){ap0();const r=document.documentElement,c=ACC[S.accent];if(c){r.style.setProperty('--ok',c[1]);r.style.setProperty('--okfg','#fff')}else{r.style.removeProperty('--ok');r.style.removeProperty('--okfg')}};
+const vs0=vSet;vSet=function(){let h=vs0();if(st=='look'){const a=`<h2>رنگ دکمه‌ها</h2><div class="chips wrapc"><button class="ch ${S.accent?'':'on'}" onclick="S.accent='';pref()">پیش‌فرض تم</button>${Object.entries(ACC).map(([k,c])=>`<button class="ch ${S.accent==k?'on':''}" onclick="S.accent='${k}';pref()"><i style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${c[1]};margin-inline-end:6px;vertical-align:middle"></i>${c[0]}</button>`).join('')}</div><h2>وزن فونت</h2>`;h=h.replace('<h2>وزن فونت</h2>',()=>a)}return h};
+function custBox(){const m=S.meta[cur]||{};return `<div class="cust"><input placeholder="نام مشتری" value="${E(m.name||'')}" oninput="setMeta('name',this.value)"><input placeholder="شماره موبایل" inputmode="tel" value="${E(m.phone||'')}" oninput="setMeta('phone',this.value)"><input class="ex" placeholder="درخواست اضافه (مثلاً بدون نمک، زودتر برسد)" value="${E(m.extra||'')}" oninput="setMeta('extra',this.value)"></div>`}
+const cs0=curSale;curSale=function(){const s=cs0();s.extra=(S.meta[cur]||{}).extra||'';return s};
+const rc0=rcHTML;rcHTML=function(s){const h=rc0(s);return s.extra?h.replace('<table>',()=>'<p>درخواست: '+E(s.extra)+'</p><table>'):h};
+function kText(){const s=curSale();return s.table+(s.cust.name?' - '+s.cust.name:'')+'\n'+s.items.map(i=>i.n+' --> '+i.q+' پرس'+(i.note?' ('+i.note+')':'')).join('\n')+(s.extra?'\nدرخواست: '+s.extra:'')}
+const em0=editMenu;editMenu=function(id){em0(id);const l=[...document.querySelectorAll('#sh label')].find(x=>x.querySelector('input[type=file]'));if(l)l.outerHTML=`<button type="button" class="imgbtn" onclick="document.getElementById('fimg').click()"><svg viewBox="0 0 24 24"><path d="M4 8h3l1.6-2.4h6.8L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.6"/></svg>افزودن / تغییر عکس غذا</button><input type="file" id="fimg" accept="image/*" style="display:none" onchange="pickImg(this)">`};
+/* v5 */
+ACC.g=['سبز','#4CAF50'];ACC.u=['بنفش','#9C27B0'];
+(function(){const P={tables:"<rect x='3' y='3' width='7' height='7' rx='2'/><rect x='14' y='3' width='7' height='7' rx='2'/><rect x='3' y='14' width='7' height='7' rx='2'/><rect x='14' y='14' width='7' height='7' rx='2'/>",order:"<rect x='3.5' y='3.5' width='17' height='17' rx='5'/><path d='M12 8.5v7M8.5 12h7'/>",live:"<circle cx='12' cy='12' r='9'/><path d='M12 7v5l3 2'/>",done:"<circle cx='12' cy='12' r='9'/><path d='m8 12.5 2.8 2.8L16 9.5'/>"};
+ const L=[['tables','میزها'],['order','سفارش'],['live','سفارش جاری'],['done','تسویه شده']];
+ document.querySelector('nav').innerHTML=L.map(([t,l])=>`<button data-t="${t}" onclick="go('${t}')"><svg viewBox="0 0 24 24">${P[t]}</svg><span class="nl">${l}</span>${t=='live'?'<i class="nb" id="nb"></i>':''}</button>`).join('')})();
+let noteOpen={};
+function togNote(id){noteOpen[id]=!noteOpen[id];openOrder();if(noteOpen[id])setTimeout(()=>{const e=document.getElementById('nt'+id);if(e)e.focus()},60)}
+function openOrder(){
+ const o=S.orders[cur]||{},mt=S.meta[cur]||{},n=mt.notes||{};
+ if(!cnt(o))return closeSheet();
+ const sub=ordTotal(o),c=calc(sub,cur=='T');
+ const rows=Object.entries(o).map(([id,q])=>{const m=S.menu.find(x=>x.id==id);if(!m)return'';const op=noteOpen[id];
+  return `<div class="li" style="flex-wrap:wrap"><div style="display:flex;align-items:center;gap:10px;flex:1"><button class="chev ${op?'open':''} ${n[id]?'hasn':''}" onclick="togNote(${m.id})" aria-label="توضیحات"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button><div><b>${E(m.name)}</b><small>${T(m.price)}${n[id]&&!op?' - '+E(n[id]):''}</small></div></div><div class="qty"><button onclick="add(${m.id},-1)" aria-label="کم">−</button><span class="${an(m.id)}">${fa(q)}</span><button onclick="add(${m.id},1)" aria-label="زیاد">+</button></div>${op?`<input class="note" id="nt${m.id}" value="${E(n[id]||'')}" placeholder="توضیحات این غذا (مثلاً بدون پیاز)" oninput="setNote(${m.id},this.value)">`:''}</div>`}).join('');
+ const fr=(l,v)=>v?`<div class="fr"><span>${l}</span><span>${T(v)}</span></div>`:'';
+ sheet(`<h2>سفارش ${curLb()}</h2>${mt.name||mt.phone?`<small>مشتری: ${E(mt.name||'')} ${E(mt.phone||'')}</small>`:''}${rows}${c.total!=sub?fr('جمع اقلام',sub)+fr('حق سرویس',c.svc)+fr('بیرون‌بر',c.tk)+fr('ارزش افزوده',c.vat):''}<div class="tot"><span>مبلغ قابل پرداخت</span><b>${T(c.total)}</b></div><div class="row"><button class="pri" onclick="regOrder()">ثبت سفارش</button><button class="ghost" onclick="pay()">پرداخت و چاپ فیش</button></div><div class="row"><button class="ghost" onclick="kitchenSheet()">ارسال به آشپزخانه</button><button class="ghost" onclick="closeSheet();go('order')">افزودن غذا</button></div><div class="row"><button class="danger" onclick="clr()">لغو سفارش</button></div>`)}
+/* v6 */
+S.btn=Object.assign({on:false,c:'',g:false,c2:'#7C4DFF',ang:135,r:14,bw:0,bc:'#000000',sh:0,shy:4,sha:30},S.btn);
+if(S.accent&&!S.btn.c&&ACC[S.accent]){S.btn.c=ACC[S.accent][1];S.btn.on=true}S.accent='';
+const lum=h=>{const n=parseInt(h.slice(1),16);return(.299*(n>>16)+.587*(n>>8&255)+.114*(n&255))/255};
+function applyBtn(){const s=document.documentElement.style,b=S.btn;
+ ['--btn-bg','--btn-r','--btn-bw','--btn-bc','--btn-sh'].forEach(v=>s.removeProperty(v));
+ if(!b.on)return;
+ if(b.c){s.setProperty('--ok',b.c);s.setProperty('--okfg',lum(b.c)>.68?'#111':'#fff')}
+ const base=b.c||'var(--ok)';
+ s.setProperty('--btn-bg',b.g?`linear-gradient(${b.ang}deg,${base},${b.c2})`:base);
+ s.setProperty('--btn-r',b.r+'px');s.setProperty('--btn-bw',b.bw+'px');s.setProperty('--btn-bc',b.bc);
+ s.setProperty('--btn-sh',b.sh>0?`0 ${b.shy}px ${b.sh}px color-mix(in srgb,${base} ${b.sha}%,transparent)`:'none')}
+const ap1=applyPrefs;applyPrefs=function(){ap1();applyBtn()};
+function bset(k,v){S.btn[k]=v;S.btn.on=true;const e=document.getElementById('v_'+k);if(e)e.textContent=v;save();applyBtn()}
+function bpick(c,g,c2){const b=S.btn;b.on=true;b.c=c;b.g=!!g;if(c2)b.c2=c2;save();applyBtn();render()}
+function breset(){S.btn={on:false,c:'',g:false,c2:'#7C4DFF',ang:135,r:14,bw:0,bc:'#000000',sh:0,shy:4,sha:30};save();applyPrefs();render()}
+function btnEditor(){const b=S.btn;let c0='#12805c';try{c0=getComputedStyle(document.documentElement).getPropertyValue('--ok').trim()||c0}catch(e){}
+ const col=b.c||(/^#[0-9a-f]{6}$/i.test(c0)?c0:'#12805c');
+ const rg=(k,l,mn,mx,st_)=>`<label><div class="rw"><span>${l}</span><b id="v_${k}">${b[k]}</b></div><input type="range" min="${mn}" max="${mx}" step="${st_}" value="${b[k]}" oninput="bset('${k}',+this.value)"></label>`;
+ const GR=[['غروب','#FF9800','#E91E63'],['اقیانوس','#2196F3','#9C27B0'],['نعناع','#4CAF50','#2196F3']];
+ return `<h2>ظاهر دکمه‌ها</h2><div class="edt"><div class="pvw"><button class="pri">دکمه اصلی</button><button class="ghost">ثانویه</button><span class="ch on">فیلتر</span></div><div style="margin-top:10px">${['#2196F3','#F44336','#FF9800','#E91E63','#4CAF50','#9C27B0'].map(c=>`<button class="sw" style="background:${c}" onclick="bpick('${c}',false)" aria-label="${c}"></button>`).join('')}</div><div class="chips" style="margin-top:8px">${GR.map(([n,a,c])=>`<button class="ch" onclick="bpick('${a}',true,'${c}')">${n}</button>`).join('')}</div><label><div class="rw"><span>رنگ اصلی</span></div><input type="color" value="${col}" oninput="bset('c',this.value)"></label><label class="chk"><input type="checkbox" ${b.g?'checked':''} onchange="bset('g',this.checked)"> گرادیانت</label><label><div class="rw"><span>رنگ دوم گرادیانت</span></div><input type="color" value="${b.c2}" oninput="bset('c2',this.value)"></label>${rg('ang','زاویه گرادیانت',0,360,5)}${rg('r','گردی گوشه‌ها',0,32,1)}${rg('bw','ضخامت بوردر',0,4,0.5)}<label><div class="rw"><span>رنگ بوردر</span></div><input type="color" value="${b.bc}" oninput="bset('bc',this.value)"></label>${rg('sh','محو شدن سایه',0,40,1)}${rg('shy','فاصله سایه',0,20,1)}${rg('sha','شدت سایه',0,60,1)}<button class="ghost wide" onclick="breset()">بازگشت به پیش‌فرض</button></div>`}
+const vs1=vSet;vSet=function(){let h=vs1();if(st=='look'){const i=h.indexOf('<h2>رنگ'),j=h.indexOf('<h2>وزن فونت</h2>');if(i>=0&&j>i)h=h.slice(0,i)+btnEditor()+h.slice(j)}return h};
+function custBox(){const m=S.meta[cur]||{};return `<div class="cust"><input placeholder="نام مشتری" value="${E(m.name||'')}" oninput="setMeta('name',this.value)"><input placeholder="شماره موبایل" inputmode="tel" value="${E(m.phone||'')}" oninput="setMeta('phone',this.value)"><button class="exb ${m.extra?'hasn':''}" onclick="editExtra()" aria-label="درخواست اضافه"><svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/></svg></button></div>`}
+function editExtra(){const m=S.meta[cur]||{};form('درخواست اضافه',[{k:'e',l:'درخواست مشتری (مثلاً بدون نمک، زودتر برسد)',v:m.extra||''}],d=>{const x=S.meta[cur]=S.meta[cur]||{};x.extra=d.e.trim()})}
+let exOpen=false;
+const oo1=openOrder;openOrder=function(){oo1();const ls=document.querySelectorAll('#sh .li');if(!ls.length)return;const m=S.meta[cur]||{};ls[ls.length-1].insertAdjacentHTML('afterend',`<button class="mini" onclick="togEx()">＋ درخواست اضافه${m.extra?' ●':''}</button>${exOpen?`<input class="note" id="exin" value="${E(m.extra||'')}" placeholder="درخواست اضافه مشتری" oninput="setMeta('extra',this.value)" style="margin-top:8px">`:''}`)};
+function togEx(){exOpen=!exOpen;openOrder();if(exOpen)setTimeout(()=>{const e=document.getElementById('exin');if(e)e.focus()},60)}
 applyPrefs();splash();render();
 </script>
 </body>
