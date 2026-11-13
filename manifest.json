@@ -3,7 +3,7 @@
   "short_name": "رستوران",
   "start_url": "./index.html",
   "scope": "./",
-  "display": "standalone",
+  "display": "fullscreen",
   "orientation": "portrait",
   "dir": "rtl",
   "lang": "fa",
