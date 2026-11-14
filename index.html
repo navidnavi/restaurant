@@ -260,10 +260,43 @@ h1{line-height:1.35;margin:0 0 8px;padding-top:0}
 @keyframes rise{to{opacity:1;transform:none;filter:none}}
 @media(prefers-reduced-motion:reduce){.up,.dn{animation:none}#splash{transition:none}.sp circle,.sp path{animation:none;stroke-dashoffset:0}#spt span{animation:none;opacity:1;transform:none;filter:none}}
 @media(prefers-reduced-motion:reduce){#toast{transition:none}}
+
+/* v10 */
+#main{padding-top:11px}
+h1{line-height:42px;margin:0 0 8px;padding-top:0}
+.gear{top:11px}
+.colbtn{inset-inline-end:66px}
+.items.c2{grid-template-columns:repeat(2,1fr)}
+.items.c3{grid-template-columns:repeat(3,1fr);gap:8px}
+.items.c3 .it{border-radius:22px}
+.items.c3 .cap{padding:26px 8px 8px}
+.items.c3 .cap b{font-size:12px}
+.items.c3 .cap small{font-size:11px}
+.items.c3 .bd{min-width:28px;height:28px;line-height:28px;font-size:14px;border-radius:14px;padding:0 6px;top:6px;inset-inline-end:6px}
+.items.c3 .mn{width:28px;height:28px;font-size:18px;border-radius:14px;top:6px;inset-inline-start:6px}
+.items.c3 .eye{top:40px;width:26px;height:26px;border-radius:13px;inset-inline-end:6px}
+.items.c3 .eye svg{width:15px;height:15px}
+:root[data-theme="light"]{--sheet:rgba(250,251,253,.84)}
+:root[data-theme="ios"]{--sheet:rgba(28,30,36,.80)}
+:root[data-theme="plain"]{--sheet:rgba(246,247,248,.86)}
+:root[data-theme="classic"]{--sheet:rgba(255,250,240,.86)}
+:root[data-theme="dark"]{--sheet:rgba(21,31,27,.84)}
+.in{background:var(--sheet,var(--card));-webkit-backdrop-filter:blur(30px) saturate(180%);backdrop-filter:blur(30px) saturate(180%)}
+.sp{position:relative}
+.sp svg{position:relative}
+.sp::before{content:"";position:absolute;left:50%;top:0;width:130px;height:130px;margin-left:-65px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.38),transparent 70%);animation:glow 2s ease-in-out infinite}
+@keyframes glow{0%,100%{transform:scale(.8);opacity:.6}50%{transform:scale(1.25);opacity:1}}
+.ld{width:160px;height:5px;border-radius:3px;background:rgba(255,255,255,.22);margin:26px auto 0;overflow:hidden}
+.ld i{display:block;height:100%;width:0;border-radius:3px;background:linear-gradient(90deg,#fff,rgba(255,255,255,.55));animation:ldf 2.3s cubic-bezier(.4,0,.2,1) .2s forwards}
+@keyframes ldf{to{width:100%}}
+.lt{margin-top:12px;font-size:13px;opacity:.85}
+.lt b{display:inline-block;animation:ldd 1.2s infinite}.lt b:nth-child(2){animation-delay:.2s}.lt b:nth-child(3){animation-delay:.4s}
+@keyframes ldd{0%,60%,100%{opacity:.25;transform:none}30%{opacity:1;transform:translateY(-3px)}}
+@media(prefers-reduced-motion:reduce){.sp::before,.lt b{animation:none}.ld i{animation:none;width:100%}}
 </style>
 </head>
 <body>
-<div id="splash"><div class="sp"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40"/><path d="M38 30v14a5 5 0 0 0 10 0V30M43 30v32M60 30c-6 4-6 14 0 18v14"/></svg><div id="spt"></div></div></div>
+<div id="splash"><div class="sp"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40"/><path d="M38 30v14a5 5 0 0 0 10 0V30M43 30v32M60 30c-6 4-6 14 0 18v14"/></svg><div id="spt"></div><div class="ld"><i></i></div><div class="lt">در حال آماده‌سازی<b>.</b><b>.</b><b>.</b></div></div></div>
 <div id="main"></div>
 <div id="cartbar" class="cart"></div>
 <nav>
@@ -635,7 +668,7 @@ function sendCust(k){const s=wk(k,()=>{const x=curSale();x.no=S.rn;return x}),ph
  sheet(`<h2>ارسال فیش به مشتری</h2><label>شماره موبایل مشتری<input id="cph" type="tel" inputmode="tel" value="${E(ph)}" oninput="cphUp('${k}',this.value)"></label><div class="rc" style="white-space:pre-line;text-align:start;margin-top:12px">${E(custTxt)}</div><div class="row"><a id="cl" class="pri lnk" href="${smsHref(ph,custTxt)}">ارسال پیامک</a><button class="ghost" onclick="copyTxt(custTxt)">کپی متن</button></div>`)}
 function render(){
  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===tab));
- $('#main').innerHTML=(tab=='set'?'':GEAR)+({order:vOrder,tables:vTables,set:vSet,live:vLive,done:vRep})[tab]();
+ $('#main').innerHTML=(tab=='set'?FSBTN:GEAR)+({order:vOrder,tables:vTables,set:vSet,live:vLive,done:vRep})[tab]();
  $('#nb').textContent=Object.keys(S.orders).length||'';
  const n=cnt(S.orders[cur]);
  $('#cartbar').innerHTML=tab=='order'&&n?`<div class="cb"><button onclick="openOrder()"><span>${E(curLb())}: ${fa(n)} آیتم</span><b>${T(grand(cur))}</b></button><button class="cbg" onclick="regOrder()">ثبت سفارش</button></div>`:''}
@@ -650,6 +683,12 @@ function vRep(){
  return `<h1>تسویه‌شده‌ها</h1><details class="nd" ${topOpen?'open':''} ontoggle="topOpen=this.open"><summary>آمار فروش امروز</summary><div class="sum" style="margin-top:8px"><div><small>فروش امروز</small><b>${T(sum)}</b></div><div><small>تعداد سفارش</small><b>${fa(td.length)}</b></div><div><small>میانگین هر سفارش</small><b>${T(td.length?Math.round(sum/td.length):0)}</b></div></div>
   ${top.length?`<h2>پرفروش‌ترین‌ها</h2><div style="max-height:260px;overflow:auto">${top.map(([n,q])=>`<div class="bar"><span>${E(n)}</span><div class="tr"><i style="width:${q/mx*100}%"></i></div><em>${fa(q)}</em></div>`).join('')}</div>`:'<p class="empty">امروز هنوز فروشی ثبت نشده.</p>'}</details>`
  +'<h2>همه تسویه‌ها</h2>'+bar('d')+'<div id="lst">'+doneList()+'</div>'+(S.sales.length?'<button class="danger wide" onclick="delAll()">حذف همه تسویه‌شده‌ها</button>':'')}
+/* v10 */
+S.cols=S.cols==3?3:2;
+const ICO=n=>'<svg viewBox="0 0 24 24">'+(n==3?'<rect x="3" y="3" width="5" height="18" rx="1.5"/><rect x="9.5" y="3" width="5" height="18" rx="1.5"/><rect x="16" y="3" width="5" height="18" rx="1.5"/>':'<rect x="3.5" y="3" width="7.5" height="18" rx="2"/><rect x="13" y="3" width="7.5" height="18" rx="2"/>')+'</svg>';
+const vo0=vOrder;vOrder=function(){return `<button class="gear colbtn" onclick="S.cols=S.cols==2?3:2;save();render()" aria-label="تعداد ستون">${ICO(S.cols==2?3:2)}</button>`+vo0().replace('<div class="items">','<div class="items c'+S.cols+'">')};
+const FSBTN='<button class="gear" onclick="fsToggle()" aria-label="تمام‌صفحه"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>';
+function fsToggle(){const bad=()=>toast('تمام‌صفحه در این حالت پشتیبانی نمی‌شود');try{if(!document.fullscreenElement){const r=document.documentElement.requestFullscreen();if(r&&r.catch)r.catch(bad)}else document.exitFullscreen()}catch(e){bad()}}
 try{if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}
 applyPrefs();splash();render();
 </script>
