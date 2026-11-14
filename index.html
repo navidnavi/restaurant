@@ -200,9 +200,9 @@ h1{margin:-4px 0 6px}
 :root[data-theme="light"] body::before,:root[data-theme="ios"] body::before{content:"";position:fixed;inset:0;z-index:-2}
 :root[data-theme="light"] body::before{background:radial-gradient(45vmax 45vmax at 12% 8%,#7fd8b0,transparent 62%),radial-gradient(50vmax 50vmax at 92% 18%,#8fb8ff,transparent 62%),radial-gradient(55vmax 55vmax at 75% 96%,#ffb3d1,transparent 62%),radial-gradient(45vmax 45vmax at 4% 88%,#ffd98f,transparent 62%),#eceff3}
 :root[data-theme="ios"] body::before{background:radial-gradient(45vmax 45vmax at 12% 8%,#1d4ed8,transparent 62%),radial-gradient(50vmax 50vmax at 92% 18%,#7c3aed,transparent 62%),radial-gradient(55vmax 55vmax at 75% 96%,#be185d,transparent 62%),radial-gradient(45vmax 45vmax at 4% 88%,#0f766e,transparent 62%),#0a0b10}
-:root[data-theme="light"] body::after,:root[data-theme="ios"] body::after{content:"";position:fixed;inset:0;z-index:-1;}
-:root[data-theme="light"] body::after{background:rgba(255,255,255,.6)}
-:root[data-theme="ios"] body::after{background:rgba(10,12,18,.58)}
+:root[data-theme="light"] body::after,:root[data-theme="ios"] body::after{content:"";position:fixed;inset:0;z-index:-1;-webkit-backdrop-filter:var(--bg-bf,none);backdrop-filter:var(--bg-bf,none)}
+:root[data-theme="light"] body::after{background:var(--bg-c,rgba(255,255,255,.6))}
+:root[data-theme="ios"] body::after{background:var(--bg-c,rgba(10,12,18,.58))}
 :root[data-theme="light"] :is(.li,.tb,.sum div,.chev,.exb,.cust input,.ch,.qty button,.nd summary),:root[data-theme="ios"] :is(.li,.tb,.sum div,.chev,.exb,.cust input,.ch,.qty button,.nd summary){}
 .in{background:var(--sheet,var(--card));}
 #main{padding-top:6px}
@@ -281,7 +281,7 @@ h1{line-height:42px;margin:0 0 8px;padding-top:0}
 :root[data-theme="plain"]{--sheet:rgba(246,247,248,.86)}
 :root[data-theme="classic"]{--sheet:rgba(255,250,240,.86)}
 :root[data-theme="dark"]{--sheet:rgba(21,31,27,.84)}
-.in{background:var(--sheet,var(--card));-webkit-backdrop-filter:blur(30px) saturate(180%);backdrop-filter:blur(30px) saturate(180%)}
+.in{background:var(--sheet-c,var(--sheet,var(--card)));-webkit-backdrop-filter:var(--sheet-bf,blur(30px) saturate(180%));backdrop-filter:var(--sheet-bf,blur(30px) saturate(180%));overscroll-behavior:contain}
 .sp{position:relative}
 .sp svg{position:relative}
 .sp::before{content:"";position:absolute;left:50%;top:0;width:130px;height:130px;margin-left:-65px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.38),transparent 70%);animation:glow 2s ease-in-out infinite}
@@ -293,6 +293,17 @@ h1{line-height:42px;margin:0 0 8px;padding-top:0}
 .lt b{display:inline-block;animation:ldd 1.2s infinite}.lt b:nth-child(2){animation-delay:.2s}.lt b:nth-child(3){animation-delay:.4s}
 @keyframes ldd{0%,60%,100%{opacity:.25;transform:none}30%{opacity:1;transform:translateY(-3px)}}
 @media(prefers-reduced-motion:reduce){.sp::before,.lt b{animation:none}.ld i{animation:none;width:100%}}
+
+/* v12 */
+html,body{overscroll-behavior-y:none}
+.fab{position:fixed;inset-inline-end:18px;bottom:calc(112px + env(safe-area-inset-bottom,0px));width:58px;height:58px;border-radius:29px;background:var(--btn-bg,var(--ok));color:var(--okfg);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(0,0,0,.28);z-index:12}
+.fab svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round}
+.srow{gap:12px}
+.si{display:flex;color:#1f9d4a}.si svg{width:30px;height:30px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.srow.cx .si{color:var(--acc)}.srow.cx .am b{color:var(--mute);text-decoration:line-through}
+.srow .okt{color:#1f9d4a}.srow .cxt{color:var(--acc)}
+.gprev{position:relative;height:110px;border-radius:16px;overflow:hidden;background:linear-gradient(135deg,#ff7a7a,#7a9bff 55%,#7affc0)}
+.gp-sheet{position:absolute;inset:16px 28px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:var(--sheet-c,var(--sheet,var(--card)));-webkit-backdrop-filter:var(--sheet-bf,blur(30px) saturate(180%));backdrop-filter:var(--sheet-bf,blur(30px) saturate(180%));font-weight:600}
 </style>
 </head>
 <body>
@@ -399,7 +410,6 @@ const FONTS={v:['وزیر‌متن',"'Vazirmatn',Tahoma,system-ui,sans-serif"],t
 function pref(){save();applyPrefs();render()}
 function setMeta(f,v){const m=S.meta[cur]=S.meta[cur]||{};m[f]=v;save()}
 function setNote(id,v){const m=S.meta[cur]=S.meta[cur]||{};(m.notes=m.notes||{})[id]=v;save()}
-function clr(){delete S.orders[cur];delete S.meta[cur];save();closeSheet();render()}
 function showReceipt(s){const h=rcHTML(s);$('#rc').innerHTML=h;const i=S.sales.indexOf(s);
  sheet(`<h2>فیش</h2>${h}<div class="row"><button class="pri" onclick="doPrint()">چاپ فیش</button><button class="ghost" onclick="shareImg(S.sales[${i}])">اشتراک عکس</button></div><div class="row"><button class="ghost" onclick="closeSheet()">بستن</button>${i>=0?`<button class="danger" onclick="delSale(${i})">حذف</button>`:''}</div>`)}
 function delSale(i){sheet(`<h2>حذف تسویه</h2><p>این فیش از لیست و گزارش حذف می‌شود.</p><div class="row"><button class="danger" onclick="S.sales.splice(${i},1);save();closeSheet();render()">حذف شود</button><button class="ghost" onclick="closeSheet()">انصراف</button></div>`)}
@@ -427,11 +437,6 @@ function add(id,d){const o=S.orders[cur]=S.orders[cur]||{};o[id]=(o[id]||0)+d;if
  save();anim={id,d};render();if($('#sh').classList.contains('open'))openOrder();anim=null}
 function feeRows(s){const r=(l,v)=>v?`<div class="fr"><span>${l}</span><span>${fa(v)}</span></div>`:'';return s.sub!=null&&(s.svc||s.tk||s.vat)?r('جمع اقلام',s.sub)+r('حق سرویس',s.svc)+r('بیرون‌بر',s.tk)+r('ارزش افزوده',s.vat):''}
 function vLive(){return '<h1>سفارش‌های جاری</h1>'+bar('l')+'<div id="lst">'+liveList()+'</div>'}
-function doneList(){
- let a=S.sales.map((s,i)=>({...s,i}));const q=nd(dQ.trim().toLowerCase());
- if(q)a=a.filter(s=>nd([lb(s.table),s.cust&&s.cust.name,s.cust&&s.cust.phone,s.no,new Date(s.t).toLocaleDateString('fa-IR'),...s.items.map(i=>i.n)].join(' ')).toLowerCase().includes(q));
- a.sort((x,y)=>dS=='max'?y.total-x.total:y.t-x.t);
- return a.map(s=>{const t=new Date(s.t);return `<button class="li" onclick="reprint(${s.i})"><div><b>${E(lb(s.table))}${s.cust&&s.cust.name?' - '+E(s.cust.name):''}</b><small>${t.toLocaleDateString('fa-IR')} ${t.toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'})}، ${s.items.map(i=>E(i.n)+' ×'+fa(i.q)).join('، ')}</small></div><span>${T(s.total)}</span></button>`}).join('')||'<p class="empty">موردی پیدا نشد.</p>'}
 function editFee(k){const N={svc:'حق سرویس',tk:'بیرون‌بر',vat:'ارزش افزوده'};
  form(N[k],[{k:'p',l:'درصد (٪)',v:S.fees[k+'P'],t:'number'},{k:'a',l:'مبلغ ثابت (تومان)',v:S.fees[k+'A'],t:'number'}],d=>{S.fees[k+'P']=Math.max(0,+d.p||0);S.fees[k+'A']=Math.max(0,+d.a||0)})}
 function editAddr(){form('آدرس روی فیش',[{k:'a',l:'آدرس رستوران',v:S.addr}],d=>{S.addr=d.a.trim()})}
@@ -625,7 +630,7 @@ const IC={};
 function imgSrc(m){const x=m.img;if(!x)return'';if(x[0]!='d')return x;const k=m.id+':'+x.length;if(IC[k])return IC[k];try{const b=atob(x.split(',')[1]),a=new Uint8Array(b.length);for(let i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return IC[k]=URL.createObjectURL(new Blob([a],{type:x.slice(5,x.indexOf(';'))}))}catch(e){return x}}
 function zoomImg(id){const m=S.menu.find(x=>x.id==id);if(!m||!m.img)return;const z=document.createElement('div');z.id='zoom';z.innerHTML=`<img src="${imgSrc(m)}" alt=""><div>${E(m.name)} - ${T(m.price)}</div>`;z.onclick=()=>z.remove();document.body.appendChild(z)}
 function vMenu(){return '<h1>منو</h1>'+(S.menu.map(m=>{const v=S.inv.find(x=>x.id==m.inv);
- return `<button class="li mrow" data-id="${m.id}" onclick="editMenu(${m.id})">${m.img?`<img class="th" decoding="async" src="${imgSrc(m)}" alt="">`:''}<div style="flex:1"><b>${E(m.name)}</b><small>${E(m.cat)} - ${E(m.unit||'پرس')}${v?' - '+E(v.name):''}</small></div><span>${T(m.price)}</span></button>`}).join('')||'<p class="empty">هنوز غذایی اضافه نکرده‌اید.</p>')+'<button class="pri wide" onclick="editMenu()">افزودن غذا</button>'+(S.menu.length>1?'<small style="text-align:center;margin-top:10px">برای مرتب کردن، روی هر غذا نگه دارید و بکشید.</small>':'')}
+ return `<button class="li mrow" data-id="${m.id}" onclick="editMenu(${m.id})">${m.img?`<img class="th" decoding="async" src="${imgSrc(m)}" alt="">`:''}<div style="flex:1"><b>${E(m.name)}</b><small>${E(m.cat)} - ${E(m.unit||'پرس')}${v?' - '+E(v.name):''}</small></div><span>${T(m.price)}</span></button>`}).join('')||'<p class="empty">هنوز غذایی اضافه نکرده‌اید.</p>')+'<button class="fab" onclick="editMenu()" aria-label="افزودن غذا"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>'+(S.menu.length>1?'<small style="text-align:center;margin-top:10px">برای مرتب کردن، روی هر غذا نگه دارید و بکشید.</small>':'')}
 function vOrder(){
  if(cur!='T'&&String(cur)[0]!='R'&&!S.tbl.find(x=>x.id==cur))cur=S.tbl[0]?String(S.tbl[0].id):'T';
  const o=S.orders[cur]||{},cats=[...new Set([...S.cats,...S.menu.map(m=>m.cat)])].filter(c=>S.menu.some(m=>m.cat==c));
@@ -677,7 +682,7 @@ let topOpen=false;
 function bar(k){const sv=k=='l'?lS:dS,q=k=='l'?lQ:dQ;
  return `<div class="chips"><button class="ch ${sv=='new'?'on':''}" onclick="${k}S='new';render()">جدیدترین</button><button class="ch ${sv=='max'?'on':''}" onclick="${k}S='max';render()">بیشترین مبلغ</button></div><input type="search" placeholder="جستجو" value="${E(q)}" oninput="${k}Q=this.value;$('#lst').innerHTML=${k=='l'?'liveList':'doneList'}()" style="margin:0 0 6px">`}
 function vRep(){
- const d=new Date().toDateString(),td=S.sales.filter(s=>new Date(s.t).toDateString()==d),sum=td.reduce((x,s)=>x+s.total,0),c={};
+ const d=new Date().toDateString(),td=S.sales.filter(s=>new Date(s.t).toDateString()==d&&s.st!='cancel'),sum=td.reduce((x,s)=>x+s.total,0),c={};
  td.forEach(s=>s.items.forEach(i=>{if(!i.x)c[i.n]=(c[i.n]||0)+i.q}));
  const top=Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,30),mx=top[0]?top[0][1]:1;
  return `<h1>تسویه‌شده‌ها</h1><details class="nd" ${topOpen?'open':''} ontoggle="topOpen=this.open"><summary>آمار فروش امروز</summary><div class="sum" style="margin-top:8px"><div><small>فروش امروز</small><b>${T(sum)}</b></div><div><small>تعداد سفارش</small><b>${fa(td.length)}</b></div><div><small>میانگین هر سفارش</small><b>${T(td.length?Math.round(sum/td.length):0)}</b></div></div>
@@ -689,6 +694,27 @@ const ICO=n=>'<svg viewBox="0 0 24 24">'+(n==3?'<rect x="3" y="3" width="5" heig
 const vo0=vOrder;vOrder=function(){return `<button class="gear colbtn" onclick="S.cols=S.cols==2?3:2;save();render()" aria-label="تعداد ستون">${ICO(S.cols==2?3:2)}</button>`+vo0().replace('<div class="items">','<div class="items c'+S.cols+'">')};
 const FSBTN='<button class="gear" onclick="fsToggle()" aria-label="تمام‌صفحه"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>';
 function fsToggle(){const bad=()=>toast('تمام‌صفحه در این حالت پشتیبانی نمی‌شود');try{if(!document.fullscreenElement){const r=document.documentElement.requestFullscreen();if(r&&r.catch)r.catch(bad)}else document.exitFullscreen()}catch(e){bad()}}
+const VER='v11';
+const vs4=vSet;vSet=function(){let h=vs4();if(st=='look')h+=`<h2>نسخه برنامه: ${VER}</h2><button class="ghost wide" onclick="hardRefresh()">به‌روزرسانی برنامه</button><small style="margin-top:6px">اطلاعات منو، سفارش‌ها و فروش پاک نمی‌شود. فقط نسخه‌ی ذخیره‌شده‌ی برنامه دوباره از اینترنت گرفته می‌شود.</small>`;return h};
+async function hardRefresh(){toast('در حال به‌روزرسانی…');flush();try{if(navigator.serviceWorker)for(const r of await navigator.serviceWorker.getRegistrations())await r.unregister();if(window.caches)for(const k of await caches.keys())await caches.delete(k)}catch(e){}location.href=location.pathname+'?u='+Date.now()}
+/* v12 */
+S.glass=Object.assign({on:false,sc:'#fafbfd',sa:84,sb:30,bc:'#ffffff',ba:60,bb:0},S.glass);
+const hexA=(h,a)=>{const n=parseInt(h.slice(1),16);return 'rgba('+(n>>16)+','+(n>>8&255)+','+(n&255)+','+a/100+')'};
+function applyGlass(){const s=document.documentElement.style,g=S.glass;['--sheet-c','--sheet-bf','--bg-c','--bg-bf'].forEach(v=>s.removeProperty(v));if(!g.on)return;s.setProperty('--sheet-c',hexA(g.sc,g.sa));s.setProperty('--sheet-bf','blur('+g.sb+'px) saturate(180%)');s.setProperty('--bg-c',hexA(g.bc,g.ba));if(g.bb>0)s.setProperty('--bg-bf','blur('+g.bb+'px)')}
+const ap2=applyPrefs;applyPrefs=function(){ap2();applyGlass()};
+function gset(k,v){S.glass[k]=v;S.glass.on=true;const e=document.getElementById('g_'+k);if(e)e.textContent=v;save();applyGlass()}
+function grst(){S.glass={on:false,sc:'#fafbfd',sa:84,sb:30,bc:'#ffffff',ba:60,bb:0};save();applyGlass();render()}
+function glassEditor(){const g=S.glass,rg=(k,l,mx)=>`<label><div class="rw"><span>${l}</span><b id="g_${k}">${g[k]}</b></div><input type="range" min="0" max="${mx}" value="${g[k]}" oninput="gset('${k}',+this.value)"></label>`;
+ return `<h2>ظاهر پنجره‌ها و پس‌زمینه</h2><div class="edt"><div class="gprev"><div class="gp-sheet">نمونه پنجره</div></div><label><div class="rw"><span>رنگ پنجره‌ها (بازبینی سفارش و...)</span></div><input type="color" value="${g.sc}" oninput="gset('sc',this.value)"></label>${rg('sa','اوپسیتی پنجره',100)}${rg('sb','بلور پنجره',60)}<label><div class="rw"><span>رنگ پس‌زمینه کلی</span></div><input type="color" value="${g.bc}" oninput="gset('bc',this.value)"></label>${rg('ba','اوپسیتی پس‌زمینه',100)}${rg('bb','بلور پس‌زمینه',60)}<small style="margin-top:6px">پس‌زمینه‌ی کلی فقط در تم‌های مدرن و ایفون اثر دارد.</small><button class="ghost wide" onclick="grst()">بازگشت به پیش‌فرض</button></div>`}
+const vs5=vSet;vSet=function(){let h=vs5();if(st=='look'){const i=h.indexOf('<h2>وزن فونت</h2>');if(i>=0)h=h.slice(0,i)+glassEditor()+h.slice(i)}return h};
+function clr(){const o=S.orders[cur];if(o&&cnt(o)){const s=curSale();s.no=S.rn++;s.st='cancel';S.sales.push(s)}delete S.orders[cur];delete S.meta[cur];save();closeSheet();render()}
+function doneList(){
+ let a=S.sales.map((s,i)=>({...s,i}));const q=nd(dQ.trim().toLowerCase());
+ if(q)a=a.filter(s=>nd([lb(s.table),s.cust&&s.cust.name,s.cust&&s.cust.phone,s.no,new Date(s.t).toLocaleDateString('fa-IR'),...s.items.map(i=>i.n)].join(' ')).toLowerCase().includes(q));
+ a.sort((x,y)=>dS=='max'?y.total-x.total:y.t-x.t);
+ const IK='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16 9.5"/></svg>',IX='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/></svg>';
+ return a.map(s=>{const t=new Date(s.t),c=s.st=='cancel';
+  return `<button class="li srow ${c?'cx':''}" onclick="reprint(${s.i})"><span class="si">${c?IX:IK}</span><div style="flex:1"><b>سفارش ${fa(s.no||0)} | ${E((s.cust&&s.cust.name)||lb(s.table))}</b><small>${t.toLocaleDateString('fa-IR')} - ${t.toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'})}</small></div><div class="am" style="text-align:end"><b>${T(s.total)}</b><small class="${c?'cxt':'okt'}">${c?'لغو شد':'موفق'}</small></div></button>`}).join('')||'<p class="empty">موردی پیدا نشد.</p>'}
 try{if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}
 applyPrefs();splash();render();
 </script>
