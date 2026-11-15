@@ -304,6 +304,44 @@ html,body{overscroll-behavior-y:none}
 .srow .okt{color:#1f9d4a}.srow .cxt{color:var(--acc)}
 .gprev{position:relative;height:110px;border-radius:16px;overflow:hidden;background:linear-gradient(135deg,#ff7a7a,#7a9bff 55%,#7affc0)}
 .gp-sheet{position:absolute;inset:16px 28px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:var(--sheet-c,var(--sheet,var(--card)));-webkit-backdrop-filter:var(--sheet-bf,blur(30px) saturate(180%));backdrop-filter:var(--sheet-bf,blur(30px) saturate(180%));font-weight:600}
+
+/* v13 */
+.grp{background:var(--card);border-radius:18px;margin:12px 0;overflow:hidden}
+.grp>summary{list-style:none;padding:15px 16px;font-weight:700;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.grp>summary::-webkit-details-marker{display:none}
+.grp>summary::after{content:"";width:9px;height:9px;border:solid currentColor;border-width:0 2px 2px 0;transform:rotate(45deg);transition:transform .2s;opacity:.5;margin-top:-3px}
+.grp[open]>summary::after{transform:rotate(225deg);margin-top:3px}
+.gb{padding:0 16px 16px}
+.gb .sub{font-size:13px;color:var(--mute);margin:16px 0 0;font-weight:600}
+.cr{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:.5px solid var(--line)}
+.cs{display:flex;gap:8px}
+.cr input[type=color]{-webkit-appearance:none;appearance:none;width:40px;height:40px;padding:0;margin:0;border:2px solid var(--card);border-radius:50%;overflow:hidden;background:none;box-shadow:0 0 0 1px var(--line);flex:none}
+input[type=color]::-webkit-color-swatch-wrapper{padding:0}
+input[type=color]::-webkit-color-swatch{border:0;border-radius:50%}
+.sl{padding:10px 0}
+.sl .rw{display:flex;justify-content:space-between;font-size:14px;margin-bottom:8px}
+.sl .rw b{font-weight:600;color:var(--ok)}.sl .rw i{font-style:normal}
+.sl input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;padding:0;margin:0;border-radius:3px;background:rgba(120,120,128,.28)}
+.sl input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.35),0 0 0 .5px rgba(0,0,0,.1)}
+.tg{display:flex!important;align-items:center;justify-content:space-between;gap:12px;margin-top:0;padding:11px 0;color:var(--ink);font-size:15px}
+.tg input{display:none}
+.tg i{flex:none;width:51px;height:31px;border-radius:16px;background:rgba(120,120,128,.32);position:relative;transition:background .2s}
+.tg i::after{content:"";position:absolute;top:2px;inset-inline-start:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.3);transition:inset-inline-start .2s}
+.tg input:checked+i{background:var(--ok)}
+.tg input:checked+i::after{inset-inline-start:22px}
+.sws{display:flex;gap:10px;margin-top:12px}
+.rbprev{margin:8px 0}.rbprev .it{aspect-ratio:auto;height:90px;max-width:160px}
+.rdel{width:34px;height:34px;border-radius:17px;background:rgba(255,59,48,.14);color:var(--acc);display:flex;align-items:center;justify-content:center;flex:none}
+.rdel svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#ut{position:fixed;inset-inline:16px;bottom:calc(112px + env(safe-area-inset-bottom,0px));max-width:420px;margin:auto;background:#222;color:#fff;padding:10px 14px;border-radius:14px;display:flex;justify-content:space-between;align-items:center;z-index:40;opacity:0;pointer-events:none;transition:opacity .2s}
+#ut.on{opacity:1;pointer-events:auto}
+#ut button{background:var(--ok);color:var(--okfg);padding:6px 14px;border-radius:10px;font-weight:600}
+.it{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+@property --ang{syntax:"<angle>";inherits:false;initial-value:0deg}
+@keyframes rbspin{to{--ang:360deg}}
+:root[data-rb] .it.sel{border-color:transparent;box-shadow:0 0 var(--rb-g,8px) -2px var(--rb-1,#ff3b30)}
+:root[data-rb] .it.sel::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:var(--rb-w,3px);background:conic-gradient(from var(--ang),var(--rb-1,#ff3b30),var(--rb-2,#ffcc00),var(--rb-3,#34c759),var(--rb-4,#0a84ff),var(--rb-1,#ff3b30));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;animation:rbspin var(--rb-s,3s) linear infinite;pointer-events:none}
+@media(prefers-reduced-motion:reduce){:root[data-rb] .it.sel::after{animation:none}}
 </style>
 </head>
 <body>
@@ -369,8 +407,8 @@ function rmTable(){if(S.tables<=1)return;if(S.orders[S.tables])return toast('م�
 /* generic form */
 let FC;
 function form(t,f,onSave,onDel){FC={f,onSave,onDel};
- sheet(`<h2>${t}</h2><div id="fe" class="err"></div>`+f.map(x=>`<label>${x.l}${x.o?`<select id="f_${x.k}">${x.o.map(o=>`<option value="${o[0]}" ${String(o[0])==String(x.v)?'selected':''}>${E(o[1])}</option>`).join('')}</select>`:`<input id="f_${x.k}" type="${x.t||'text'}" ${x.t=='number'?'step="any" inputmode="decimal"':''} value="${E(x.v)}">`}</label>`).join('')+`<div class="row"><button class="pri" onclick="fsave()">ذخیره</button>${onDel?'<button class="danger" onclick="fdel()">حذف</button>':''}</div>`)}
-function fsave(){const d={};FC.f.forEach(x=>d[x.k]=$('#f_'+x.k).value);const e=FC.onSave(d);if(e){$('#fe').textContent=e;return}save();closeSheet();render()}
+ sheet(`<h2>${t}</h2><div id="fe" class="err"></div>`+f.map(x=>x.t=='toggle'?`<label class="tg"><span>${x.l}</span><input type="checkbox" id="f_${x.k}" ${x.v?'checked':''}><i></i></label>`:`<label>${x.l}${x.o?`<select id="f_${x.k}">${x.o.map(o=>`<option value="${o[0]}" ${String(o[0])==String(x.v)?'selected':''}>${E(o[1])}</option>`).join('')}</select>`:`<input id="f_${x.k}" type="${x.t||'text'}" ${x.t=='number'?'step="any" inputmode="decimal"':''} value="${E(x.v)}">`}</label>`).join('')+`<div class="row"><button class="pri" onclick="fsave()">ذخیره</button>${onDel?'<button class="danger" onclick="fdel()">حذف</button>':''}</div>`)}
+function fsave(){const d={};FC.f.forEach(x=>d[x.k]=x.t=='toggle'?$('#f_'+x.k).checked:$('#f_'+x.k).value);const e=FC.onSave(d);if(e){$('#fe').textContent=e;return}save();closeSheet();render()}
 function fdel(){FC.onDel();save();closeSheet();render()}
 
 /* menu */
@@ -479,11 +517,6 @@ const ap1=applyPrefs;applyPrefs=function(){ap1();applyBtn()};
 function bset(k,v){S.btn[k]=v;S.btn.on=true;const e=document.getElementById('v_'+k);if(e)e.textContent=v;save();applyBtn()}
 function bpick(c,g,c2){const b=S.btn;b.on=true;b.c=c;b.g=!!g;if(c2)b.c2=c2;save();applyBtn();render()}
 function breset(){S.btn={on:false,c:'',g:false,c2:'#7C4DFF',ang:135,r:14,bw:0,bc:'#000000',sh:0,shy:4,sha:30};save();applyPrefs();render()}
-function btnEditor(){const b=S.btn;let c0='#12805c';try{c0=getComputedStyle(document.documentElement).getPropertyValue('--ok').trim()||c0}catch(e){}
- const col=b.c||(/^#[0-9a-f]{6}$/i.test(c0)?c0:'#12805c');
- const rg=(k,l,mn,mx,st_)=>`<label><div class="rw"><span>${l}</span><b id="v_${k}">${b[k]}</b></div><input type="range" min="${mn}" max="${mx}" step="${st_}" value="${b[k]}" oninput="bset('${k}',+this.value)"></label>`;
- const GR=[['غروب','#FF9800','#E91E63'],['اقیانوس','#2196F3','#9C27B0'],['نعناع','#4CAF50','#2196F3']];
- return `<h2>ظاهر دکمه‌ها</h2><div class="edt"><div class="pvw"><button class="pri">دکمه اصلی</button><button class="ghost">ثانویه</button><span class="ch on">فیلتر</span></div><div style="margin-top:10px">${['#2196F3','#F44336','#FF9800','#E91E63','#4CAF50','#9C27B0'].map(c=>`<button class="sw" style="background:${c}" onclick="bpick('${c}',false)" aria-label="${c}"></button>`).join('')}</div><div class="chips" style="margin-top:8px">${GR.map(([n,a,c])=>`<button class="ch" onclick="bpick('${a}',true,'${c}')">${n}</button>`).join('')}</div><label><div class="rw"><span>رنگ اصلی</span></div><input type="color" value="${col}" oninput="bset('c',this.value)"></label><label class="chk"><input type="checkbox" ${b.g?'checked':''} onchange="bset('g',this.checked)"> گرادیانت</label><label><div class="rw"><span>رنگ دوم گرادیانت</span></div><input type="color" value="${b.c2}" oninput="bset('c2',this.value)"></label>${rg('ang','زاویه گرادیانت',0,360,5)}${rg('r','گردی گوشه‌ها',0,32,1)}${rg('bw','ضخامت بوردر',0,4,0.5)}<label><div class="rw"><span>رنگ بوردر</span></div><input type="color" value="${b.bc}" oninput="bset('bc',this.value)"></label>${rg('sh','محو شدن سایه',0,40,1)}${rg('shy','فاصله سایه',0,20,1)}${rg('sha','شدت سایه',0,60,1)}<button class="ghost wide" onclick="breset()">بازگشت به پیش‌فرض</button></div>`}
 const vs1=vSet;vSet=function(){let h=vs1();if(st=='look'){const i=h.indexOf('<h2>رنگ'),j=h.indexOf('<h2>وزن فونت</h2>');if(i>=0&&j>i)h=h.slice(0,i)+btnEditor()+h.slice(j)}return h};
 function togEx(){exOpen=!exOpen;openOrder();if(exOpen)setTimeout(()=>{const e=document.getElementById('exin');if(e)e.focus()},60)}
 /* v7 */
@@ -512,11 +545,6 @@ function sendSMS(k){k=k||cur;
 function copyK(){const t=smsText;
  function fb(){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');toast('متن کپی شد')}catch(e){toast('کپی نشد')}a.remove()}
  try{navigator.clipboard.writeText(t).then(()=>toast('متن کپی شد'),fb)}catch(e){fb()}}
-function liveList(){
- let a=Object.keys(S.orders).map(k=>({k,o:S.orders[k],m:S.meta[k]||{}}));const q=nd(lQ.trim().toLowerCase());
- if(q)a=a.filter(x=>nd(lblOf(x.k)+' '+(x.m.name||'')+' '+(x.m.phone||'')+' '+Object.keys(x.o).map(id=>(S.menu.find(y=>y.id==id)||{}).name||'').join(' ')).toLowerCase().includes(q));
- a.sort((x,y)=>lS=='max'?grand(y.k)-grand(x.k):(y.m.t||0)-(x.m.t||0));
- return a.map(x=>`<button class="li" onclick="openLive('${x.k}')"><div><b>${E(lblOf(x.k))}${x.m.name?' - '+E(x.m.name):''}</b><small>${fa(cnt(x.o))} آیتم${x.m.reg?' - ثبت‌شده':' - ثبت‌نشده'}${x.m.phone?' - '+E(x.m.phone):''}</small></div><span>${T(grand(x.k))}</span></button>`).join('')||'<p class="empty">موردی پیدا نشد.</p>'}
 function vTables(){
  const areas=[...new Set(S.tbl.map(t=>t.area))];let h='<h1>میزها</h1>';
  areas.forEach(a=>{h+=`<div class="tbh">${E(a)}</div><div class="grid">`+S.tbl.filter(t=>t.area==a).map(t=>{
@@ -549,21 +577,6 @@ S.cats=S.cats||[...new Set(['غذای اصلی','پیش‌غذا','نوشیدن�
 S.units=S.units||['پرس','عدد','سیخ','بشقاب'];
 S.menu.forEach(m=>{m.unit=m.unit||'پرس';if(m.eye===undefined)m.eye=true;m.use=1});
 function pickImg(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas'),s=640;c.width=c.height=s;const k=Math.max(s/im.width,s/im.height),w=im.width*k,h=im.height*k;c.getContext('2d').drawImage(im,(s-w)/2,(s-h)/2,w,h);tmpImg=c.toDataURL('image/jpeg',0.82);$('#pv').innerHTML=pvHTML()};im.onerror=()=>toast('این فایل عکس معتبر نیست');im.src=r.result};r.readAsDataURL(f)}
-function editMenu(id){
- const m=S.menu.find(x=>x.id==id)||{name:'',price:'',inv:'',unit:S.units[0]||'پرس',cat:cf||S.cats[0]||'غذای اصلی',eye:true};
- const cats=[...new Set([...S.cats,m.cat])].map(c=>[c,c]),units=[...new Set([...S.units,m.unit])].map(c=>[c,c]);
- form(id?'ویرایش غذا':'غذای جدید',[
-  {k:'name',l:'نام غذا',v:m.name},{k:'price',l:'قیمت (تومان)',v:m.price,t:'number'},
-  {k:'cat',l:'دسته‌بندی',v:m.cat,o:cats},{k:'unit',l:'پسوند (پرس، عدد، سیخ...)',v:m.unit,o:units},
-  {k:'inv',l:'کسر از انبار',v:m.inv,o:[['','هیچ‌کدام'],...S.inv.map(x=>[x.id,x.name])]},
-  {k:'eye',l:'آیکون چشم برای نمایش عکس به مشتری',v:m.eye===false?'0':'1',o:[['1','فعال'],['0','غیرفعال']]}],
- d=>{if(!d.name.trim()||!(+d.price>0))return 'نام و قیمت غذا را وارد کنید';
-  const r={id:m.id||S.nid++,name:d.name.trim(),price:+d.price,cat:d.cat,unit:d.unit,inv:d.inv?+d.inv:'',use:1,eye:d.eye=='1',img:tmpImg};
-  if(id)Object.assign(m,r);else S.menu.push(r)},
- id?()=>{S.menu=S.menu.filter(x=>x.id!=id);Object.values(S.orders).forEach(o=>delete o[id])}:null);
- tmpImg=m.img||'';
- $('#sh .row').insertAdjacentHTML('beforebegin','<label>عکس غذا<input type="file" accept="image/*" onchange="pickImg(this)"></label><div id="pv"></div>');
- $('#pv').innerHTML=pvHTML()}
 function delList(t,i){S[t].splice(i,1);save();render()}
 const vs3=vSet;vSet=function(){
  const head='<h1>تنظیمات</h1><div class="chips">'+[['menu','منو'],['inv','انبار'],['dc','دسته‌ها'],['look','ظاهر'],['fee','فاکتور'],['rc','فیش']].map(([k,n])=>`<button class="ch ${st==k?'on':''}" onclick="st='${k}';render()">${n}</button>`).join('')+'</div>';
@@ -619,7 +632,7 @@ function rcCanvas(s){
   e.preventDefault();cl.style.top=(y-cl.offsetHeight/2)+'px';
   const o=rows().find(r=>{if(r===el)return false;const b=r.getBoundingClientRect();return y>b.top&&y<b.bottom});
   if(o){const b=o.getBoundingClientRect();o.parentNode.insertBefore(el,y<b.top+b.height/2?o:o.nextSibling)}};
- const end=()=>{clearTimeout(tm);if(on){cl.remove();el.style.opacity='';const ids=rows().map(r=>+r.dataset.id);S.menu.sort((a,b)=>ids.indexOf(a.id)-ids.indexOf(b.id));save();window.__dragEnd=Date.now()}on=false;el=null};
+ const end=()=>{clearTimeout(tm);if(on){cl.remove();el.style.opacity='';const ids=rows().map(r=>+r.dataset.id);{const ord=ids.map(i=>S.menu.find(m=>m.id==i));let k=0;S.menu=S.menu.map(m=>ids.includes(m.id)?ord[k++]:m)}save();window.__dragEnd=Date.now()}on=false;el=null};
  document.addEventListener('touchstart',start,{passive:true});document.addEventListener('touchmove',move,{passive:false});document.addEventListener('touchend',end);document.addEventListener('touchcancel',end);
  document.addEventListener('mousedown',start);document.addEventListener('mousemove',move);document.addEventListener('mouseup',end);
  document.addEventListener('click',e=>{if(Date.now()-(window.__dragEnd||0)<450){e.stopPropagation();e.preventDefault()}},true)})();
@@ -629,8 +642,6 @@ const exOf=k=>+((S.meta[k]||{}).exP)||0;
 const IC={};
 function imgSrc(m){const x=m.img;if(!x)return'';if(x[0]!='d')return x;const k=m.id+':'+x.length;if(IC[k])return IC[k];try{const b=atob(x.split(',')[1]),a=new Uint8Array(b.length);for(let i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return IC[k]=URL.createObjectURL(new Blob([a],{type:x.slice(5,x.indexOf(';'))}))}catch(e){return x}}
 function zoomImg(id){const m=S.menu.find(x=>x.id==id);if(!m||!m.img)return;const z=document.createElement('div');z.id='zoom';z.innerHTML=`<img src="${imgSrc(m)}" alt=""><div>${E(m.name)} - ${T(m.price)}</div>`;z.onclick=()=>z.remove();document.body.appendChild(z)}
-function vMenu(){return '<h1>منو</h1>'+(S.menu.map(m=>{const v=S.inv.find(x=>x.id==m.inv);
- return `<button class="li mrow" data-id="${m.id}" onclick="editMenu(${m.id})">${m.img?`<img class="th" decoding="async" src="${imgSrc(m)}" alt="">`:''}<div style="flex:1"><b>${E(m.name)}</b><small>${E(m.cat)} - ${E(m.unit||'پرس')}${v?' - '+E(v.name):''}</small></div><span>${T(m.price)}</span></button>`}).join('')||'<p class="empty">هنوز غذایی اضافه نکرده‌اید.</p>')+'<button class="fab" onclick="editMenu()" aria-label="افزودن غذا"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>'+(S.menu.length>1?'<small style="text-align:center;margin-top:10px">برای مرتب کردن، روی هر غذا نگه دارید و بکشید.</small>':'')}
 function vOrder(){
  if(cur!='T'&&String(cur)[0]!='R'&&!S.tbl.find(x=>x.id==cur))cur=S.tbl[0]?String(S.tbl[0].id):'T';
  const o=S.orders[cur]||{},cats=[...new Set([...S.cats,...S.menu.map(m=>m.cat)])].filter(c=>S.menu.some(m=>m.cat==c));
@@ -639,7 +650,7 @@ function vOrder(){
  if(String(cur)[0]=='R')h+=`<p class="alert">ویرایش سفارش جاری: ${E(lblOf(cur))}</p>`;
  h+=`<div class="chips"><button class="ch ${cur=='T'?'on':''} ${S.orders.T?'dot':''}" onclick="selT('T')">بیرون‌بر</button>`+S.tbl.map(t=>`<button class="ch ${cur==t.id?'on':''} ${S.orders[t.id]?'dot':''}" onclick="selT(${t.id})">${E(t.name)}</button>`).join('')+'</div>'+custBox()+'<div class="chips">'+cats.map(c=>`<button class="ch ${cf==c?'on':''}" onclick="cf=this.dataset.c;render()" data-c="${E(c)}">${E(c)}</button>`).join('')+'</div><div class="items">';
  h+=S.menu.filter(m=>m.cat==cf).map(m=>{const q=o[m.id]||0,a=an(m.id);
-  return `<div class="it ${q?'sel':''}" role="button" tabindex="0" onclick="add(${m.id},1)">${m.img?`<img decoding="async" src="${imgSrc(m)}" alt="">`:`<div class="ph">${E([...m.name][0]||'')}</div>`}<div class="cap"><b>${E(m.name)}</b><small>${T(m.price)}</small></div>${m.img&&m.eye!==false?`<button class="eye" onclick="event.stopPropagation();zoomImg(${m.id})" aria-label="نمایش عکس"><svg viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button>`:''}${q?`<span class="bd ${a?'pulse':''}"><span class="dg ${a=='up'?'dgu':a=='dn'?'dgd':''}">${fa(q)}</span></span><button class="mn" onclick="event.stopPropagation();add(${m.id},-1)" aria-label="کم">−</button>`:''}</div>`}).join('');
+  return `<div class="it ${q?'sel':''}" role="button" tabindex="0" ${m.img&&m.eye?`data-z="${m.id}"`:''} onclick="add(${m.id},1)">${m.img?`<img decoding="async" src="${imgSrc(m)}" alt="">`:`<div class="ph">${E([...m.name][0]||'')}</div>`}<div class="cap"><b>${E(m.name)}</b><small>${T(m.price)}</small></div>${q?`<span class="bd ${a?'pulse':''}"><span class="dg ${a=='up'?'dgu':a=='dn'?'dgd':''}">${fa(q)}</span></span><button class="mn" onclick="event.stopPropagation();add(${m.id},-1)" aria-label="کم">−</button>`:''}</div>`}).join('');
  return h+'</div>'+(S.menu.length?'':'<p class="empty">منو خالی است. از تنظیمات، بخش منو، غذا اضافه کنید.</p>')}
 function curSale(){const o=S.orders[cur]||{},mt=S.meta[cur]||{},n=mt.notes||{},items=[];let sub=0;
  for(const [id,q] of Object.entries(o)){const m=S.menu.find(x=>x.id==id);if(!m)continue;items.push({n:m.name,q,p:m.price,note:n[id]||'',u:m.unit||'پرس'});sub+=m.price*q}
@@ -693,7 +704,6 @@ S.cols=S.cols==3?3:2;
 const ICO=n=>'<svg viewBox="0 0 24 24">'+(n==3?'<rect x="3" y="3" width="5" height="18" rx="1.5"/><rect x="9.5" y="3" width="5" height="18" rx="1.5"/><rect x="16" y="3" width="5" height="18" rx="1.5"/>':'<rect x="3.5" y="3" width="7.5" height="18" rx="2"/><rect x="13" y="3" width="7.5" height="18" rx="2"/>')+'</svg>';
 const vo0=vOrder;vOrder=function(){return `<button class="gear colbtn" onclick="S.cols=S.cols==2?3:2;save();render()" aria-label="تعداد ستون">${ICO(S.cols==2?3:2)}</button>`+vo0().replace('<div class="items">','<div class="items c'+S.cols+'">')};
 const FSBTN='<button class="gear" onclick="fsToggle()" aria-label="تمام‌صفحه"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>';
-function fsToggle(){const bad=()=>toast('تمام‌صفحه در این حالت پشتیبانی نمی‌شود');try{if(!document.fullscreenElement){const r=document.documentElement.requestFullscreen();if(r&&r.catch)r.catch(bad)}else document.exitFullscreen()}catch(e){bad()}}
 const VER='v11';
 const vs4=vSet;vSet=function(){let h=vs4();if(st=='look')h+=`<h2>نسخه برنامه: ${VER}</h2><button class="ghost wide" onclick="hardRefresh()">به‌روزرسانی برنامه</button><small style="margin-top:6px">اطلاعات منو، سفارش‌ها و فروش پاک نمی‌شود. فقط نسخه‌ی ذخیره‌شده‌ی برنامه دوباره از اینترنت گرفته می‌شود.</small>`;return h};
 async function hardRefresh(){toast('در حال به‌روزرسانی…');flush();try{if(navigator.serviceWorker)for(const r of await navigator.serviceWorker.getRegistrations())await r.unregister();if(window.caches)for(const k of await caches.keys())await caches.delete(k)}catch(e){}location.href=location.pathname+'?u='+Date.now()}
@@ -704,17 +714,82 @@ function applyGlass(){const s=document.documentElement.style,g=S.glass;['--sheet
 const ap2=applyPrefs;applyPrefs=function(){ap2();applyGlass()};
 function gset(k,v){S.glass[k]=v;S.glass.on=true;const e=document.getElementById('g_'+k);if(e)e.textContent=v;save();applyGlass()}
 function grst(){S.glass={on:false,sc:'#fafbfd',sa:84,sb:30,bc:'#ffffff',ba:60,bb:0};save();applyGlass();render()}
-function glassEditor(){const g=S.glass,rg=(k,l,mx)=>`<label><div class="rw"><span>${l}</span><b id="g_${k}">${g[k]}</b></div><input type="range" min="0" max="${mx}" value="${g[k]}" oninput="gset('${k}',+this.value)"></label>`;
- return `<h2>ظاهر پنجره‌ها و پس‌زمینه</h2><div class="edt"><div class="gprev"><div class="gp-sheet">نمونه پنجره</div></div><label><div class="rw"><span>رنگ پنجره‌ها (بازبینی سفارش و...)</span></div><input type="color" value="${g.sc}" oninput="gset('sc',this.value)"></label>${rg('sa','اوپسیتی پنجره',100)}${rg('sb','بلور پنجره',60)}<label><div class="rw"><span>رنگ پس‌زمینه کلی</span></div><input type="color" value="${g.bc}" oninput="gset('bc',this.value)"></label>${rg('ba','اوپسیتی پس‌زمینه',100)}${rg('bb','بلور پس‌زمینه',60)}<small style="margin-top:6px">پس‌زمینه‌ی کلی فقط در تم‌های مدرن و ایفون اثر دارد.</small><button class="ghost wide" onclick="grst()">بازگشت به پیش‌فرض</button></div>`}
 const vs5=vSet;vSet=function(){let h=vs5();if(st=='look'){const i=h.indexOf('<h2>وزن فونت</h2>');if(i>=0)h=h.slice(0,i)+glassEditor()+h.slice(i)}return h};
 function clr(){const o=S.orders[cur];if(o&&cnt(o)){const s=curSale();s.no=S.rn++;s.st='cancel';S.sales.push(s)}delete S.orders[cur];delete S.meta[cur];save();closeSheet();render()}
+/* v13 */
+if(!S.eyeV13){S.menu.forEach(m=>m.eye=false);S.eyeV13=1}
+S.rb=Object.assign({on:true,w:3,spd:3,glow:8,c:['#ff3b30','#ffcc00','#34c759','#0a84ff']},S.rb);S.fullscreen=!!S.fullscreen;
+const RBDEF=()=>({on:true,w:3,spd:3,glow:8,c:['#ff3b30','#ffcc00','#34c759','#0a84ff']});
+function applyRB(){const r=document.documentElement,s=r.style,b=S.rb;if(!b.on){r.removeAttribute('data-rb');return}r.setAttribute('data-rb','1');s.setProperty('--rb-w',b.w+'px');s.setProperty('--rb-s',b.spd+'s');s.setProperty('--rb-g',b.glow+'px');b.c.forEach((c,i)=>s.setProperty('--rb-'+(i+1),c))}
+const ap3=applyPrefs;applyPrefs=function(){ap3();applyRB()};
+function rset(k,v){S.rb[k]=v;const e=document.getElementById('r_'+k);if(e)e.textContent=v;save();applyRB()}
+function rcol(i,v){S.rb.c[i]=v;save();applyRB()}
+function rtog(v){S.rb.on=v;save();applyRB()}
+function rrst(){S.rb=RBDEF();save();applyRB();render()}
+function fsEnter(){try{const r=document.documentElement.requestFullscreen();if(r&&r.catch)r.catch(()=>{})}catch(e){}}
+function fsToggle(){if(!document.documentElement.requestFullscreen)return toast('تمام‌صفحه در این حالت پشتیبانی نمی‌شود');if(!document.fullscreenElement){S.fullscreen=true;save();fsEnter()}else{S.fullscreen=false;save();try{document.exitFullscreen()}catch(e){}}}
+function fsPref(v){S.fullscreen=v;save();if(v)fsEnter();else if(document.fullscreenElement){try{document.exitFullscreen()}catch(e){}}}
+function fsWant(){if(S.fullscreen&&!document.fullscreenElement&&document.documentElement.requestFullscreen)document.addEventListener('pointerup',fsEnter,{once:true,capture:true})}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)fsWant()});fsWant();
+(function(){let tm=0,act=false;
+ const st=e=>{const el=e.target.closest&&e.target.closest('.it[data-z]');if(!el)return;tm=setTimeout(()=>{zoomImg(+el.dataset.z);act=true;if(navigator.vibrate)navigator.vibrate(12)},450)};
+ const cl=()=>clearTimeout(tm),up=()=>{clearTimeout(tm);if(act){window.__lp=Date.now();act=false}};
+ document.addEventListener('touchstart',st,{passive:true});document.addEventListener('mousedown',st);
+ document.addEventListener('touchmove',cl,{passive:true});document.addEventListener('touchend',up);document.addEventListener('touchcancel',up);document.addEventListener('mouseup',up);
+ document.addEventListener('click',e=>{if(act||Date.now()-(window.__lp||0)<500){e.stopPropagation();e.preventDefault()}},true);
+ document.addEventListener('contextmenu',e=>{if(e.target.closest&&e.target.closest('.it'))e.preventDefault()})})();
+const TRASH='<svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12h10l1-12M9 7V4h6v3"/></svg>';
+function undo(fn){let e=document.getElementById('ut');if(!e){e=document.createElement('div');e.id='ut';document.body.appendChild(e)}e.innerHTML='<span>حذف شد</span><button>بازگردانی</button>';e.classList.add('on');e.querySelector('button').onclick=()=>{fn();e.classList.remove('on')};clearTimeout(undo.t);undo.t=setTimeout(()=>e.classList.remove('on'),5000)}
+function delLive(k){const o=S.orders[k],m=S.meta[k];delete S.orders[k];delete S.meta[k];save();render();undo(()=>{S.orders[k]=o;if(m)S.meta[k]=m;save();render()})}
+function delSaleQ(i){const s=S.sales.splice(i,1)[0];save();render();undo(()=>{S.sales.splice(i,0,s);save();render()})}
+function liveList(){
+ let a=Object.keys(S.orders).map(k=>({k,o:S.orders[k],m:S.meta[k]||{}}));const q=nd(lQ.trim().toLowerCase());
+ if(q)a=a.filter(x=>nd(lblOf(x.k)+' '+(x.m.name||'')+' '+(x.m.phone||'')+' '+Object.keys(x.o).map(id=>(S.menu.find(y=>y.id==id)||{}).name||'').join(' ')).toLowerCase().includes(q));
+ a.sort((x,y)=>lS=='max'?grand(y.k)-grand(x.k):(y.m.t||0)-(x.m.t||0));
+ return a.map(x=>`<button class="li" onclick="openLive('${x.k}')"><div style="flex:1"><b>${E(lblOf(x.k))}${x.m.name?' - '+E(x.m.name):''}</b><small>${fa(cnt(x.o))} آیتم${x.m.reg?' - ثبت‌شده':' - ثبت‌نشده'}${x.m.phone?' - '+E(x.m.phone):''}</small></div><span>${T(grand(x.k))}</span><span class="rdel" role="button" aria-label="حذف" onclick="event.stopPropagation();delLive('${x.k}')">${TRASH}</span></button>`).join('')||'<p class="empty">موردی پیدا نشد.</p>'}
 function doneList(){
  let a=S.sales.map((s,i)=>({...s,i}));const q=nd(dQ.trim().toLowerCase());
  if(q)a=a.filter(s=>nd([lb(s.table),s.cust&&s.cust.name,s.cust&&s.cust.phone,s.no,new Date(s.t).toLocaleDateString('fa-IR'),...s.items.map(i=>i.n)].join(' ')).toLowerCase().includes(q));
  a.sort((x,y)=>dS=='max'?y.total-x.total:y.t-x.t);
  const IK='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16 9.5"/></svg>',IX='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/></svg>';
  return a.map(s=>{const t=new Date(s.t),c=s.st=='cancel';
-  return `<button class="li srow ${c?'cx':''}" onclick="reprint(${s.i})"><span class="si">${c?IX:IK}</span><div style="flex:1"><b>سفارش ${fa(s.no||0)} | ${E((s.cust&&s.cust.name)||lb(s.table))}</b><small>${t.toLocaleDateString('fa-IR')} - ${t.toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'})}</small></div><div class="am" style="text-align:end"><b>${T(s.total)}</b><small class="${c?'cxt':'okt'}">${c?'لغو شد':'موفق'}</small></div></button>`}).join('')||'<p class="empty">موردی پیدا نشد.</p>'}
+  return `<button class="li srow ${c?'cx':''}" onclick="reprint(${s.i})"><span class="si">${c?IX:IK}</span><div style="flex:1"><b>سفارش ${fa(s.no||0)} | ${E((s.cust&&s.cust.name)||lb(s.table))}</b><small>${t.toLocaleDateString('fa-IR')} - ${t.toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'})}</small></div><div class="am" style="text-align:end"><b>${T(s.total)}</b><small class="${c?'cxt':'okt'}">${c?'لغو شد':'موفق'}</small></div><span class="rdel" role="button" aria-label="حذف" onclick="event.stopPropagation();delSaleQ(${s.i})">${TRASH}</span></button>`}).join('')||'<p class="empty">موردی پیدا نشد.</p>'}
+let mcat='';
+function vMenu(){
+ const cats=[...new Set([...S.cats,...S.menu.map(m=>m.cat)])];if(!cats.includes(mcat))mcat=cats[0]||'';
+ const list=S.menu.filter(m=>m.cat==mcat);
+ return '<h1>منو</h1><div class="chips wrapc">'+cats.map(c=>`<button class="ch ${mcat==c?'on':''}" data-c="${E(c)}" onclick="mcat=this.dataset.c;render()">${E(c)} <span style="opacity:.65;font-size:12px">${fa(S.menu.filter(m=>m.cat==c).length)}</span></button>`).join('')+'</div>'+(list.map(m=>{const v=S.inv.find(x=>x.id==m.inv);
+  return `<button class="li mrow" data-id="${m.id}" onclick="editMenu(${m.id})">${m.img?`<img class="th" decoding="async" src="${imgSrc(m)}" alt="">`:''}<div style="flex:1"><b>${E(m.name)}</b><small>${E(m.unit||'پرس')}${v?' - '+E(v.name):''}</small></div><span>${T(m.price)}</span></button>`}).join('')||'<p class="empty">در این دسته غذایی نیست.</p>')+'<button class="fab" onclick="editMenu()" aria-label="افزودن غذا"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>'+(list.length>1?'<small style="text-align:center;margin-top:10px">برای مرتب کردن، روی هر غذا نگه دارید و بکشید.</small>':'')}
+function editMenu(id){
+ const m=S.menu.find(x=>x.id==id)||{name:'',price:'',inv:'',unit:S.units[0]||'پرس',cat:mcat||S.cats[0]||'غذای اصلی',eye:false};
+ const cats=[...new Set([...S.cats,m.cat])].map(c=>[c,c]),units=[...new Set([...S.units,m.unit])].map(c=>[c,c]);
+ form(id?'ویرایش غذا':'غذای جدید',[
+  {k:'name',l:'نام غذا',v:m.name},{k:'price',l:'قیمت (تومان)',v:m.price,t:'number'},
+  {k:'cat',l:'دسته‌بندی',v:m.cat,o:cats},{k:'unit',l:'پسوند (پرس، عدد، سیخ...)',v:m.unit,o:units},
+  {k:'inv',l:'کسر از انبار',v:m.inv,o:[['','هیچ‌کدام'],...S.inv.map(x=>[x.id,x.name])]},
+  {k:'eye',l:'نمایش عکس بزرگ با نگه داشتن روی غذا',v:!!m.eye,t:'toggle'}],
+ d=>{if(!d.name.trim()||!(+d.price>0))return 'نام و قیمت غذا را وارد کنید';
+  const r={id:m.id||S.nid++,name:d.name.trim(),price:+d.price,cat:d.cat,unit:d.unit,inv:d.inv?+d.inv:'',use:1,eye:!!d.eye,img:tmpImg};
+  if(id)Object.assign(m,r);else S.menu.push(r)},
+ id?()=>{S.menu=S.menu.filter(x=>x.id!=id);Object.values(S.orders).forEach(o=>delete o[id])}:null);
+ tmpImg=m.img||'';
+ $('#sh .row').insertAdjacentHTML('beforebegin','<label>عکس غذا<input type="file" accept="image/*" onchange="pickImg(this)"></label><div id="pv"></div>');
+ $('#pv').innerHTML=pvHTML()}
+function btnEditor(){const b=S.btn;let c0='#12805c';try{c0=getComputedStyle(document.documentElement).getPropertyValue('--ok').trim()||c0}catch(e){}
+ const col=b.c||(/^#[0-9a-f]{6}$/i.test(c0)?c0:'#12805c');
+ const cr=(l,k,v)=>`<div class="cr"><span>${l}</span><input type="color" value="${v}" oninput="bset('${k}',this.value)"></div>`;
+ const sl=(k,l,mn,mx,s,u)=>`<div class="sl"><div class="rw"><span>${l}</span><b><i id="v_${k}">${b[k]}</i>${u}</b></div><input type="range" min="${mn}" max="${mx}" step="${s}" value="${b[k]}" oninput="bset('${k}',+this.value)"></div>`;
+ const GR=[['غروب','#FF9800','#E91E63'],['اقیانوس','#2196F3','#9C27B0'],['نعناع','#4CAF50','#2196F3']];
+ return `<details class="grp"><summary>دکمه‌ها</summary><div class="gb"><div class="pvw"><button class="pri">دکمه اصلی</button><button class="ghost">ثانویه</button><span class="ch on">فیلتر</span></div><div class="sws">${['#2196F3','#F44336','#FF9800','#E91E63','#4CAF50','#9C27B0'].map(c=>`<button class="sw" style="background:${c}" onclick="bpick('${c}',false)" aria-label="${c}"></button>`).join('')}</div><div class="chips" style="margin-top:8px">${GR.map(([n,a,c])=>`<button class="ch" onclick="bpick('${a}',true,'${c}')">${n}</button>`).join('')}</div>${cr('رنگ اصلی','c',col)}<label class="tg"><span>گرادیانت</span><input type="checkbox" ${b.g?'checked':''} onchange="bset('g',this.checked)"><i></i></label>${cr('رنگ دوم گرادیانت','c2',b.c2)}${sl('ang','زاویه گرادیانت',0,360,5,'°')}${sl('r','گردی گوشه‌ها',0,32,1,'px')}${sl('bw','ضخامت بوردر',0,4,.5,'px')}${cr('رنگ بوردر','bc',b.bc)}${sl('sh','محو شدن سایه',0,40,1,'px')}${sl('shy','فاصله سایه',0,20,1,'px')}${sl('sha','شدت سایه',0,60,1,'٪')}<button class="ghost wide" onclick="breset()">بازگشت به پیش‌فرض</button></div></details>`}
+function glassEditor(){const g=S.glass;
+ const cr=(l,k)=>`<div class="cr"><span>${l}</span><input type="color" value="${g[k]}" oninput="gset('${k}',this.value)"></div>`;
+ const sl=(k,l,mx,u)=>`<div class="sl"><div class="rw"><span>${l}</span><b><i id="g_${k}">${g[k]}</i>${u}</b></div><input type="range" min="0" max="${mx}" value="${g[k]}" oninput="gset('${k}',+this.value)"></div>`;
+ return `<details class="grp"><summary>پنجره‌ها و پس‌زمینه</summary><div class="gb"><div class="gprev"><div class="gp-sheet">نمونه پنجره</div></div><h3 class="sub">پنجره‌ها (بازبینی سفارش و...)</h3>${cr('رنگ','sc')}${sl('sa','اوپسیتی',100,'٪')}${sl('sb','بلور',60,'px')}<h3 class="sub">پس‌زمینه کلی</h3>${cr('رنگ','bc')}${sl('ba','اوپسیتی',100,'٪')}${sl('bb','بلور',60,'px')}<small>پس‌زمینه کلی فقط در تم‌های مدرن و ایفون اثر دارد.</small><button class="ghost wide" onclick="grst()">بازگشت به پیش‌فرض</button></div></details>`}
+function rbEditor(){const b=S.rb;
+ const sl=(k,l,mn,mx,s,u)=>`<div class="sl"><div class="rw"><span>${l}</span><b><i id="r_${k}">${b[k]}</i>${u}</b></div><input type="range" min="${mn}" max="${mx}" step="${s}" value="${b[k]}" oninput="rset('${k}',+this.value)"></div>`;
+ return `<details class="grp"><summary>قاب غذاهای انتخاب‌شده</summary><div class="gb"><label class="tg"><span>بوردر چرخان رنگی</span><input type="checkbox" ${b.on?'checked':''} onchange="rtog(this.checked)"><i></i></label><div class="rbprev"><div class="it sel"><div class="ph" style="font-size:22px">نمونه</div></div></div>${sl('w','ضخامت',1,8,.5,'px')}${sl('spd','زمان یک دور (ثانیه)',0.8,10,.2,'s')}${sl('glow','درخشش',0,30,1,'px')}<div class="cr"><span>رنگ‌ها</span><span class="cs">${b.c.map((c,i)=>`<input type="color" value="${c}" oninput="rcol(${i},this.value)">`).join('')}</span></div><button class="ghost wide" onclick="rrst()">بازگشت به پیش‌فرض</button></div></details>`}
+function fsGroup(){return `<details class="grp"><summary>تمام‌صفحه</summary><div class="gb"><label class="tg"><span>باز شدن برنامه به‌صورت تمام‌صفحه</span><input type="checkbox" ${S.fullscreen?'checked':''} onchange="fsPref(this.checked)"><i></i></label><small>مرورگر اجازه نمی‌دهد برنامه خودش بدون لمس تمام‌صفحه شود؛ پس با اولین لمس بعد از باز کردن برنامه، تمام‌صفحه فعال می‌شود.</small></div></details>`}
+const vs6=vSet;vSet=function(){let h=vs6();if(st=='look'){const i=h.indexOf('<h2>وزن فونت</h2>');if(i>=0)h=h.slice(0,i)+rbEditor()+fsGroup()+h.slice(i)}return h};
 try{if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}
 applyPrefs();splash();render();
 </script>
