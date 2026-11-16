@@ -6,7 +6,7 @@
 <title>مدیریت رستوران</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#12805c">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192-v2.png">
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f3f5f4;--card:#fff;--ink:#101d19;--mute:#64756e;--line:#e1e8e4;--acc:#e2452f;--accfg:#fff;--ok:#12805c;--okfg:#fff;--warn:#b9770e;--sh:0 1px 2px rgba(16,29,25,.06),0 4px 14px rgba(16,29,25,.05);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
@@ -342,6 +342,24 @@ input[type=color]::-webkit-color-swatch{border:0;border-radius:50%}
 :root[data-rb] .it.sel{border-color:transparent;box-shadow:0 0 var(--rb-g,8px) -2px var(--rb-1,#ff3b30)}
 :root[data-rb] .it.sel::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:var(--rb-w,3px);background:conic-gradient(from var(--ang),var(--rb-1,#ff3b30),var(--rb-2,#ffcc00),var(--rb-3,#34c759),var(--rb-4,#0a84ff),var(--rb-1,#ff3b30));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;animation:rbspin var(--rb-s,3s) linear infinite;pointer-events:none}
 @media(prefers-reduced-motion:reduce){:root[data-rb] .it.sel::after{animation:none}}
+
+/* v14 */
+#splash{background:rgba(8,16,22,.55);background:radial-gradient(circle at 50% 36%,color-mix(in srgb,var(--ok) 60%,transparent),rgba(6,12,18,.5) 78%);-webkit-backdrop-filter:blur(38px) saturate(170%);backdrop-filter:blur(38px) saturate(170%)}
+.stk{position:sticky;bottom:0;margin:12px -16px calc(-18px - env(safe-area-inset-bottom,0px));padding:10px 16px calc(18px + env(safe-area-inset-bottom,0px));background:var(--sheet-c,var(--sheet,var(--card)));-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border-top:.5px solid var(--line);z-index:2}
+.hero{background:var(--btn-bg,var(--ok));color:var(--okfg);border-radius:20px;padding:16px 18px;margin-top:8px}
+.hero small{color:inherit;opacity:.85}.hero b{display:block;font-size:30px;font-weight:800;line-height:1.3}
+.dl{display:inline-block;margin-top:6px;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.22);font-size:12.5px}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.tiles div{background:var(--bg);border-radius:14px;padding:10px}.tiles b{font-size:15px;font-weight:700;display:block}
+.wk{display:flex;align-items:flex-end;gap:7px;height:130px;margin-top:8px}
+.wc{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px}
+.wc u{text-decoration:none;font-size:10px;color:var(--mute)}
+.wc i{display:block;width:100%;border-radius:8px 8px 4px 4px;background:var(--ok);opacity:.3;min-height:4px}
+.wc.today i{opacity:1}.wc span{font-size:11px;color:var(--mute)}
+.rk{width:22px;height:22px;border-radius:11px;background:var(--bg);font-size:12px;display:flex;align-items:center;justify-content:center;flex:none}
+.bar2{display:grid;grid-template-columns:22px 7.5rem 1fr 2rem;gap:8px;align-items:center;padding:5px 0}
+.bar2 .tr{height:10px;background:var(--line);border-radius:5px;overflow:hidden}.bar2 .tr i{display:block;height:100%;background:var(--ok);border-radius:5px}
+.bar2 em{font-style:normal;color:var(--mute);text-align:end}
 </style>
 </head>
 <body>
@@ -668,7 +686,7 @@ openOrder=function(){
  if(!cnt(o))return closeSheet();
  const rows=Object.entries(o).map(([id,q])=>{const m=S.menu.find(x=>x.id==id);if(!m)return'';const op=noteOpen[id];
   return `<div class="li" style="flex-wrap:wrap"><div style="display:flex;align-items:center;gap:10px;flex:1"><button class="chev ${op?'open':''} ${n[id]?'hasn':''}" onclick="togNote(${m.id})" aria-label="توضیحات"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>${m.img?`<img class="th" decoding="async" src="${imgSrc(m)}" alt="">`:''}<div><b>${E(m.name)}</b><small>${T(m.price)}${n[id]&&!op?' - '+E(n[id]):''}</small></div></div><div class="qty"><button onclick="add(${m.id},-1)" aria-label="کم">−</button><span class="${an(m.id)}">${fa(q)}</span><button onclick="add(${m.id},1)" aria-label="زیاد">+</button></div>${op?`<input class="note" id="nt${m.id}" value="${E(n[id]||'')}" oninput="setNote(${m.id},this.value)">`:''}</div>`}).join('');
- sheet(`<h2>سفارش ${E(curLb())}</h2>${mt.name||mt.phone?`<small>مشتری: ${E(mt.name||'')} ${E(mt.phone||'')}</small>`:''}${rows}<label>درخواست اضافه (تومان)<input type="number" inputmode="numeric" value="${mt.exP||''}" oninput="setExP(this.value)"></label><div id="tt">${totHTML()}</div><div class="row"><button class="ghost" onclick="addMore()">افزودن غذا</button><button class="ghost" onclick="pay()">صدور فیش</button></div><div class="row"><button class="ghost" onclick="kitchenSheet()">ارسال به آشپزخانه</button><button class="ghost" onclick="sendCust(cur)">ارسال به مشتری</button></div><div class="row"><button class="danger" onclick="clr()">لغو سفارش</button></div>`)};
+ sheet(`<h2>سفارش ${E(curLb())}</h2>${mt.name||mt.phone?`<small>مشتری: ${E(mt.name||'')} ${E(mt.phone||'')}</small>`:''}${rows}<label>درخواست اضافه (تومان)<input type="number" inputmode="numeric" value="${mt.exP||''}" oninput="setExP(this.value)"></label><div class="stk"><div id="tt">${totHTML()}</div><div class="row"><button class="ghost" onclick="addMore()">افزودن غذا</button><button class="ghost" onclick="pay()">صدور فیش</button></div><div class="row"><button class="ghost" onclick="kitchenSheet()">ارسال به آشپزخانه</button><button class="ghost" onclick="sendCust(cur)">ارسال به مشتری</button></div><div class="row"><button class="danger" onclick="clr()">لغو سفارش</button></div></div>`)};
 function showBill(s){const h=rcHTML(s),k=cur;$('#rc').innerHTML=h;
  sheet(`<h2>فیش</h2>${h}<div class="row"><button class="pri" onclick="doPrint()">چاپ فیش</button><button class="ghost" onclick="shareImg(wk('${k}',()=>{const x=curSale();x.no=S.rn;return x}))">اشتراک عکس</button></div><div class="row"><button class="ghost" onclick="sendCust('${k}')">ارسال به مشتری</button></div><div class="row"><button class="paid" onclick="settle('${k}')">پرداخت شده</button></div>`)}
 let custTxt='';
@@ -692,13 +710,6 @@ function addList(t,title){form(title,[{k:'v',l:'نام',v:''}],d=>{const x=d.v.t
 let topOpen=false;
 function bar(k){const sv=k=='l'?lS:dS,q=k=='l'?lQ:dQ;
  return `<div class="chips"><button class="ch ${sv=='new'?'on':''}" onclick="${k}S='new';render()">جدیدترین</button><button class="ch ${sv=='max'?'on':''}" onclick="${k}S='max';render()">بیشترین مبلغ</button></div><input type="search" placeholder="جستجو" value="${E(q)}" oninput="${k}Q=this.value;$('#lst').innerHTML=${k=='l'?'liveList':'doneList'}()" style="margin:0 0 6px">`}
-function vRep(){
- const d=new Date().toDateString(),td=S.sales.filter(s=>new Date(s.t).toDateString()==d&&s.st!='cancel'),sum=td.reduce((x,s)=>x+s.total,0),c={};
- td.forEach(s=>s.items.forEach(i=>{if(!i.x)c[i.n]=(c[i.n]||0)+i.q}));
- const top=Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,30),mx=top[0]?top[0][1]:1;
- return `<h1>تسویه‌شده‌ها</h1><details class="nd" ${topOpen?'open':''} ontoggle="topOpen=this.open"><summary>آمار فروش امروز</summary><div class="sum" style="margin-top:8px"><div><small>فروش امروز</small><b>${T(sum)}</b></div><div><small>تعداد سفارش</small><b>${fa(td.length)}</b></div><div><small>میانگین هر سفارش</small><b>${T(td.length?Math.round(sum/td.length):0)}</b></div></div>
-  ${top.length?`<h2>پرفروش‌ترین‌ها</h2><div style="max-height:260px;overflow:auto">${top.map(([n,q])=>`<div class="bar"><span>${E(n)}</span><div class="tr"><i style="width:${q/mx*100}%"></i></div><em>${fa(q)}</em></div>`).join('')}</div>`:'<p class="empty">امروز هنوز فروشی ثبت نشده.</p>'}</details>`
- +'<h2>همه تسویه‌ها</h2>'+bar('d')+'<div id="lst">'+doneList()+'</div>'+(S.sales.length?'<button class="danger wide" onclick="delAll()">حذف همه تسویه‌شده‌ها</button>':'')}
 /* v10 */
 S.cols=S.cols==3?3:2;
 const ICO=n=>'<svg viewBox="0 0 24 24">'+(n==3?'<rect x="3" y="3" width="5" height="18" rx="1.5"/><rect x="9.5" y="3" width="5" height="18" rx="1.5"/><rect x="16" y="3" width="5" height="18" rx="1.5"/>':'<rect x="3.5" y="3" width="7.5" height="18" rx="2"/><rect x="13" y="3" width="7.5" height="18" rx="2"/>')+'</svg>';
@@ -718,7 +729,7 @@ const vs5=vSet;vSet=function(){let h=vs5();if(st=='look'){const i=h.indexOf('<h2
 function clr(){const o=S.orders[cur];if(o&&cnt(o)){const s=curSale();s.no=S.rn++;s.st='cancel';S.sales.push(s)}delete S.orders[cur];delete S.meta[cur];save();closeSheet();render()}
 /* v13 */
 if(!S.eyeV13){S.menu.forEach(m=>m.eye=false);S.eyeV13=1}
-S.rb=Object.assign({on:true,w:3,spd:3,glow:8,c:['#ff3b30','#ffcc00','#34c759','#0a84ff']},S.rb);S.fullscreen=!!S.fullscreen;
+S.rb=Object.assign({on:true,w:3,spd:3,glow:8,c:['#ff3b30','#ffcc00','#34c759','#0a84ff']},S.rb);S.fullscreen=!!S.fullscreen;if(!S.fsV14){S.fullscreen=true;S.fsV14=1}
 const RBDEF=()=>({on:true,w:3,spd:3,glow:8,c:['#ff3b30','#ffcc00','#34c759','#0a84ff']});
 function applyRB(){const r=document.documentElement,s=r.style,b=S.rb;if(!b.on){r.removeAttribute('data-rb');return}r.setAttribute('data-rb','1');s.setProperty('--rb-w',b.w+'px');s.setProperty('--rb-s',b.spd+'s');s.setProperty('--rb-g',b.glow+'px');b.c.forEach((c,i)=>s.setProperty('--rb-'+(i+1),c))}
 const ap3=applyPrefs;applyPrefs=function(){ap3();applyRB()};
@@ -742,11 +753,6 @@ const TRASH='<svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12h
 function undo(fn){let e=document.getElementById('ut');if(!e){e=document.createElement('div');e.id='ut';document.body.appendChild(e)}e.innerHTML='<span>حذف شد</span><button>بازگردانی</button>';e.classList.add('on');e.querySelector('button').onclick=()=>{fn();e.classList.remove('on')};clearTimeout(undo.t);undo.t=setTimeout(()=>e.classList.remove('on'),5000)}
 function delLive(k){const o=S.orders[k],m=S.meta[k];delete S.orders[k];delete S.meta[k];save();render();undo(()=>{S.orders[k]=o;if(m)S.meta[k]=m;save();render()})}
 function delSaleQ(i){const s=S.sales.splice(i,1)[0];save();render();undo(()=>{S.sales.splice(i,0,s);save();render()})}
-function liveList(){
- let a=Object.keys(S.orders).map(k=>({k,o:S.orders[k],m:S.meta[k]||{}}));const q=nd(lQ.trim().toLowerCase());
- if(q)a=a.filter(x=>nd(lblOf(x.k)+' '+(x.m.name||'')+' '+(x.m.phone||'')+' '+Object.keys(x.o).map(id=>(S.menu.find(y=>y.id==id)||{}).name||'').join(' ')).toLowerCase().includes(q));
- a.sort((x,y)=>lS=='max'?grand(y.k)-grand(x.k):(y.m.t||0)-(x.m.t||0));
- return a.map(x=>`<button class="li" onclick="openLive('${x.k}')"><div style="flex:1"><b>${E(lblOf(x.k))}${x.m.name?' - '+E(x.m.name):''}</b><small>${fa(cnt(x.o))} آیتم${x.m.reg?' - ثبت‌شده':' - ثبت‌نشده'}${x.m.phone?' - '+E(x.m.phone):''}</small></div><span>${T(grand(x.k))}</span><span class="rdel" role="button" aria-label="حذف" onclick="event.stopPropagation();delLive('${x.k}')">${TRASH}</span></button>`).join('')||'<p class="empty">موردی پیدا نشد.</p>'}
 function doneList(){
  let a=S.sales.map((s,i)=>({...s,i}));const q=nd(dQ.trim().toLowerCase());
  if(q)a=a.filter(s=>nd([lb(s.table),s.cust&&s.cust.name,s.cust&&s.cust.phone,s.no,new Date(s.t).toLocaleDateString('fa-IR'),...s.items.map(i=>i.n)].join(' ')).toLowerCase().includes(q));
@@ -790,6 +796,26 @@ function rbEditor(){const b=S.rb;
  return `<details class="grp"><summary>قاب غذاهای انتخاب‌شده</summary><div class="gb"><label class="tg"><span>بوردر چرخان رنگی</span><input type="checkbox" ${b.on?'checked':''} onchange="rtog(this.checked)"><i></i></label><div class="rbprev"><div class="it sel"><div class="ph" style="font-size:22px">نمونه</div></div></div>${sl('w','ضخامت',1,8,.5,'px')}${sl('spd','زمان یک دور (ثانیه)',0.8,10,.2,'s')}${sl('glow','درخشش',0,30,1,'px')}<div class="cr"><span>رنگ‌ها</span><span class="cs">${b.c.map((c,i)=>`<input type="color" value="${c}" oninput="rcol(${i},this.value)">`).join('')}</span></div><button class="ghost wide" onclick="rrst()">بازگشت به پیش‌فرض</button></div></details>`}
 function fsGroup(){return `<details class="grp"><summary>تمام‌صفحه</summary><div class="gb"><label class="tg"><span>باز شدن برنامه به‌صورت تمام‌صفحه</span><input type="checkbox" ${S.fullscreen?'checked':''} onchange="fsPref(this.checked)"><i></i></label><small>مرورگر اجازه نمی‌دهد برنامه خودش بدون لمس تمام‌صفحه شود؛ پس با اولین لمس بعد از باز کردن برنامه، تمام‌صفحه فعال می‌شود.</small></div></details>`}
 const vs6=vSet;vSet=function(){let h=vs6();if(st=='look'){const i=h.indexOf('<h2>وزن فونت</h2>');if(i>=0)h=h.slice(0,i)+rbEditor()+fsGroup()+h.slice(i)}return h};
+/* v14 */
+function liveList(){
+ let a=Object.keys(S.orders).map(k=>({k,o:S.orders[k],m:S.meta[k]||{}}));const q=nd(lQ.trim().toLowerCase());
+ if(q)a=a.filter(x=>nd(lblOf(x.k)+' '+(x.m.name||'')+' '+(x.m.phone||'')+' '+Object.keys(x.o).map(id=>(S.menu.find(y=>y.id==id)||{}).name||'').join(' ')).toLowerCase().includes(q));
+ a.sort((x,y)=>lS=='max'?grand(y.k)-grand(x.k):(y.m.t||0)-(x.m.t||0));
+ return a.map(x=>{const t=x.m.t?new Date(x.m.t):null;
+  return `<button class="li" onclick="openLive('${x.k}')"><div style="flex:1"><b>${E(lblOf(x.k))}${x.m.name?' - '+E(x.m.name):''}</b><small>${fa(cnt(x.o))} آیتم${x.m.reg?' - ثبت‌شده':' - ثبت‌نشده'}${x.m.phone?' - '+E(x.m.phone):''}</small>${t?`<small>${t.toLocaleDateString('fa-IR')} - ${t.toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'})}</small>`:''}</div><span>${T(grand(x.k))}</span><span class="rdel" role="button" aria-label="حذف" onclick="event.stopPropagation();delLive('${x.k}')">${TRASH}</span></button>`}).join('')||'<p class="empty">موردی پیدا نشد.</p>'}
+function vRep(){
+ const DAY=864e5,t0=new Date();t0.setHours(0,0,0,0);const base=t0.getTime();
+ const okS=S.sales.filter(s=>s.st!='cancel'),inDay=(s,d)=>s.t>=base-d*DAY&&s.t<base-d*DAY+DAY;
+ const dayTot=d=>okS.filter(s=>inDay(s,d)).reduce((x,s)=>x+s.total,0);
+ const td=okS.filter(s=>inDay(s,0)),sum=dayTot(0),yd=dayTot(1),cx=S.sales.filter(s=>s.st=='cancel'&&inDay(s,0)).length,c={};
+ td.forEach(s=>s.items.forEach(i=>{if(!i.x)c[i.n]=(c[i.n]||0)+i.q}));
+ const top=Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,30),mx=top[0]?top[0][1]:1;
+ const wk=[6,5,4,3,2,1,0].map(d=>({d,v:dayTot(d),l:new Date(base-d*DAY).toLocaleDateString('fa-IR',{weekday:'short'})})),wm=Math.max(1,...wk.map(x=>x.v));
+ const pct=yd>0?Math.round((sum-yd)/yd*100):null;
+ return `<h1>تسویه‌شده‌ها</h1><details class="nd" ${topOpen?'open':''} ontoggle="topOpen=this.open"><summary>آمار فروش</summary><div class="hero"><small>فروش امروز</small><b>${T(sum)}</b>${pct!==null?`<span class="dl">${pct>=0?'▲':'▼'} ${fa(Math.abs(pct))}٪ نسبت به دیروز</span>`:''}</div><div class="tiles"><div><small>سفارش موفق</small><b>${fa(td.length)}</b></div><div><small>میانگین سفارش</small><b>${T(td.length?Math.round(sum/td.length):0)}</b></div><div><small>لغو شده</small><b>${fa(cx)}</b></div></div><h2>فروش ۷ روز اخیر (هزار تومان)</h2><div class="wk">${wk.map(x=>`<div class="wc ${x.d==0?'today':''}"><u>${x.v?fa(Math.round(x.v/1000)):''}</u><i style="height:${Math.max(3,x.v/wm*84)}%"></i><span>${x.l}</span></div>`).join('')}</div>${top.length?`<h2>پرفروش‌ترین‌های امروز</h2><div style="max-height:260px;overflow:auto">${top.map(([n,q],i)=>`<div class="bar2"><span class="rk">${fa(i+1)}</span><span>${E(n)}</span><div class="tr"><i style="width:${q/mx*100}%"></i></div><em>${fa(q)}</em></div>`).join('')}</div>`:'<p class="empty">امروز هنوز فروشی ثبت نشده.</p>'}</details>`
+ +'<h2>همه تسویه‌ها</h2>'+bar('d')+'<div id="lst">'+doneList()+'</div>'+(S.sales.length?'<button class="danger wide" onclick="delAll()">حذف همه تسویه‌شده‌ها</button>':'')}
+function catMove(i,d){const j=i+d;if(j<0||j>=S.cats.length)return;[S.cats[i],S.cats[j]]=[S.cats[j],S.cats[i]];save();render()}
+const vs7=vSet;vSet=function(){let h=vs7();if(st=='dc'&&S.cats.length>1)h+='<h2>ترتیب نمایش دسته‌بندی‌ها</h2>'+S.cats.map((c,i)=>`<div class="li"><b style="flex:1">${E(c)}</b><div class="qty"><button onclick="catMove(${i},-1)" aria-label="بالا">↑</button><button onclick="catMove(${i},1)" aria-label="پایین">↓</button></div></div>`).join('')+'<small>این ترتیب در صفحه‌ی ثبت سفارش و منوی تنظیمات اعمال می‌شود.</small>';return h};
 try{if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}
 applyPrefs();splash();render();
 </script>
