@@ -360,6 +360,16 @@ input[type=color]::-webkit-color-swatch{border:0;border-radius:50%}
 .bar2{display:grid;grid-template-columns:22px 7.5rem 1fr 2rem;gap:8px;align-items:center;padding:5px 0}
 .bar2 .tr{height:10px;background:var(--line);border-radius:5px;overflow:hidden}.bar2 .tr i{display:block;height:100%;background:var(--ok);border-radius:5px}
 .bar2 em{font-style:normal;color:var(--mute);text-align:end}
+
+/* v15 */
+.catbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:8;margin:0 -16px;padding:8px 16px 10px;background:rgba(242,245,241,.78);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
+:root[data-theme="dark"] .catbar,:root[data-theme="ios"] .catbar{background:rgba(12,16,22,.72)}
+@media(prefers-color-scheme:dark){:root:not([data-theme]) .catbar{background:rgba(12,16,22,.72)}}
+
+/* v16 */
+.in:has(.stk){display:flex;flex-direction:column;overflow:hidden;padding-bottom:0}
+.in:has(.stk) .sc{flex:1 1 auto;min-height:0;overflow:auto;padding-bottom:8px;-webkit-overflow-scrolling:touch}
+.in:has(.stk) .stk{position:static;flex:none;margin:0 -16px;padding:10px 16px calc(18px + env(safe-area-inset-bottom,0px));border-top:.5px solid var(--line);-webkit-backdrop-filter:none;backdrop-filter:none}
 </style>
 </head>
 <body>
@@ -408,9 +418,9 @@ const curLb=()=>lblOf(cur);
 const cnt=o=>Object.values(o||{}).reduce((a,b)=>a+b,0);
 function go(t){tab=t;render();scrollTo(0,0)}
 function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),2400)}
-function sheet(h){const e=$('#sh'),p=e.querySelector('.in'),st=p?p.scrollTop:0;
+function sheet(h){const e=$('#sh'),p=e.querySelector('.in'),st=p?p.scrollTop:0,q=e.querySelector('.sc'),sst=q?q.scrollTop:0;
  e.innerHTML='<div class="in"><button class="x" onclick="closeSheet()" aria-label="بستن">✕</button>'+h+'</div>';
- e.classList.add('open');e.querySelector('.in').scrollTop=st}
+ e.classList.add('open');e.querySelector('.in').scrollTop=st;const q2=e.querySelector('.sc');if(q2)q2.scrollTop=sst}
 
 /* order entry (home) */
 function ordTotal(o){return Object.entries(o||{}).reduce((s,[id,q])=>{const m=S.menu.find(x=>x.id==id);return s+(m?m.price*q:0)},0)}
@@ -666,7 +676,7 @@ function vOrder(){
  if(!cats.includes(cf))cf=cats.includes('غذای اصلی')?'غذای اصلی':(cats[0]||'');
  let h='<h1>ثبت سفارش</h1>';
  if(String(cur)[0]=='R')h+=`<p class="alert">ویرایش سفارش جاری: ${E(lblOf(cur))}</p>`;
- h+=`<div class="chips"><button class="ch ${cur=='T'?'on':''} ${S.orders.T?'dot':''}" onclick="selT('T')">بیرون‌بر</button>`+S.tbl.map(t=>`<button class="ch ${cur==t.id?'on':''} ${S.orders[t.id]?'dot':''}" onclick="selT(${t.id})">${E(t.name)}</button>`).join('')+'</div>'+custBox()+'<div class="chips">'+cats.map(c=>`<button class="ch ${cf==c?'on':''}" onclick="cf=this.dataset.c;render()" data-c="${E(c)}">${E(c)}</button>`).join('')+'</div><div class="items">';
+ h+=`<div class="chips"><button class="ch ${cur=='T'?'on':''} ${S.orders.T?'dot':''}" onclick="selT('T')">بیرون‌بر</button>`+S.tbl.map(t=>`<button class="ch ${cur==t.id?'on':''} ${S.orders[t.id]?'dot':''}" onclick="selT(${t.id})">${E(t.name)}</button>`).join('')+'</div>'+custBox()+'<div class="chips catbar">'+cats.map(c=>`<button class="ch ${cf==c?'on':''}" onclick="cf=this.dataset.c;render()" data-c="${E(c)}">${E(c)}</button>`).join('')+'</div><div class="items">';
  h+=S.menu.filter(m=>m.cat==cf).map(m=>{const q=o[m.id]||0,a=an(m.id);
   return `<div class="it ${q?'sel':''}" role="button" tabindex="0" ${m.img&&m.eye?`data-z="${m.id}"`:''} onclick="add(${m.id},1)">${m.img?`<img decoding="async" src="${imgSrc(m)}" alt="">`:`<div class="ph">${E([...m.name][0]||'')}</div>`}<div class="cap"><b>${E(m.name)}</b><small>${T(m.price)}</small></div>${q?`<span class="bd ${a?'pulse':''}"><span class="dg ${a=='up'?'dgu':a=='dn'?'dgd':''}">${fa(q)}</span></span><button class="mn" onclick="event.stopPropagation();add(${m.id},-1)" aria-label="کم">−</button>`:''}</div>`}).join('');
  return h+'</div>'+(S.menu.length?'':'<p class="empty">منو خالی است. از تنظیمات، بخش منو، غذا اضافه کنید.</p>')}
@@ -686,7 +696,7 @@ openOrder=function(){
  if(!cnt(o))return closeSheet();
  const rows=Object.entries(o).map(([id,q])=>{const m=S.menu.find(x=>x.id==id);if(!m)return'';const op=noteOpen[id];
   return `<div class="li" style="flex-wrap:wrap"><div style="display:flex;align-items:center;gap:10px;flex:1"><button class="chev ${op?'open':''} ${n[id]?'hasn':''}" onclick="togNote(${m.id})" aria-label="توضیحات"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>${m.img?`<img class="th" decoding="async" src="${imgSrc(m)}" alt="">`:''}<div><b>${E(m.name)}</b><small>${T(m.price)}${n[id]&&!op?' - '+E(n[id]):''}</small></div></div><div class="qty"><button onclick="add(${m.id},-1)" aria-label="کم">−</button><span class="${an(m.id)}">${fa(q)}</span><button onclick="add(${m.id},1)" aria-label="زیاد">+</button></div>${op?`<input class="note" id="nt${m.id}" value="${E(n[id]||'')}" oninput="setNote(${m.id},this.value)">`:''}</div>`}).join('');
- sheet(`<h2>سفارش ${E(curLb())}</h2>${mt.name||mt.phone?`<small>مشتری: ${E(mt.name||'')} ${E(mt.phone||'')}</small>`:''}${rows}<label>درخواست اضافه (تومان)<input type="number" inputmode="numeric" value="${mt.exP||''}" oninput="setExP(this.value)"></label><div class="stk"><div id="tt">${totHTML()}</div><div class="row"><button class="ghost" onclick="addMore()">افزودن غذا</button><button class="ghost" onclick="pay()">صدور فیش</button></div><div class="row"><button class="ghost" onclick="kitchenSheet()">ارسال به آشپزخانه</button><button class="ghost" onclick="sendCust(cur)">ارسال به مشتری</button></div><div class="row"><button class="danger" onclick="clr()">لغو سفارش</button></div></div>`)};
+ sheet(`<div class="sc"><h2>سفارش ${E(curLb())}</h2>${mt.name||mt.phone?`<small>مشتری: ${E(mt.name||'')} ${E(mt.phone||'')}</small>`:''}${rows}<label>درخواست اضافه (تومان)<input type="number" inputmode="numeric" value="${mt.exP||''}" oninput="setExP(this.value)"></label></div><div class="stk"><div id="tt">${totHTML()}</div><div class="row"><button class="ghost" onclick="addMore()">افزودن غذا</button><button class="ghost" onclick="pay()">صدور فیش</button></div><div class="row"><button class="ghost" onclick="kitchenSheet()">ارسال به آشپزخانه</button><button class="ghost" onclick="sendCust(cur)">ارسال به مشتری</button></div><div class="row"><button class="danger" onclick="clr()">لغو سفارش</button></div></div>`)};
 function showBill(s){const h=rcHTML(s),k=cur;$('#rc').innerHTML=h;
  sheet(`<h2>فیش</h2>${h}<div class="row"><button class="pri" onclick="doPrint()">چاپ فیش</button><button class="ghost" onclick="shareImg(wk('${k}',()=>{const x=curSale();x.no=S.rn;return x}))">اشتراک عکس</button></div><div class="row"><button class="ghost" onclick="sendCust('${k}')">ارسال به مشتری</button></div><div class="row"><button class="paid" onclick="settle('${k}')">پرداخت شده</button></div>`)}
 let custTxt='';
@@ -737,10 +747,11 @@ function rset(k,v){S.rb[k]=v;const e=document.getElementById('r_'+k);if(e)e.text
 function rcol(i,v){S.rb.c[i]=v;save();applyRB()}
 function rtog(v){S.rb.on=v;save();applyRB()}
 function rrst(){S.rb=RBDEF();save();applyRB();render()}
-function fsEnter(){try{const r=document.documentElement.requestFullscreen();if(r&&r.catch)r.catch(()=>{})}catch(e){}}
+function isFS(){try{return matchMedia('(display-mode: fullscreen)').matches}catch(e){return false}}
+function fsEnter(){if(isFS())return;try{const r=document.documentElement.requestFullscreen();if(r&&r.catch)r.catch(()=>{})}catch(e){}}
 function fsToggle(){if(!document.documentElement.requestFullscreen)return toast('تمام‌صفحه در این حالت پشتیبانی نمی‌شود');if(!document.fullscreenElement){S.fullscreen=true;save();fsEnter()}else{S.fullscreen=false;save();try{document.exitFullscreen()}catch(e){}}}
 function fsPref(v){S.fullscreen=v;save();if(v)fsEnter();else if(document.fullscreenElement){try{document.exitFullscreen()}catch(e){}}}
-function fsWant(){if(S.fullscreen&&!document.fullscreenElement&&document.documentElement.requestFullscreen)document.addEventListener('pointerup',fsEnter,{once:true,capture:true})}
+function fsWant(){if(!isFS()&&S.fullscreen&&!document.fullscreenElement&&document.documentElement.requestFullscreen)document.addEventListener('pointerup',fsEnter,{once:true,capture:true})}
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)fsWant()});fsWant();
 (function(){let tm=0,act=false;
  const st=e=>{const el=e.target.closest&&e.target.closest('.it[data-z]');if(!el)return;tm=setTimeout(()=>{zoomImg(+el.dataset.z);act=true;if(navigator.vibrate)navigator.vibrate(12)},450)};
