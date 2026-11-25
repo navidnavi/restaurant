@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>مدیریت رستوران</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#12805c">
@@ -383,6 +383,37 @@ html::before{content:"";position:fixed;top:0;left:0;right:0;height:env(safe-area
 :root[data-nv] nav{background:var(--nv-bg);-webkit-backdrop-filter:blur(var(--nv-bl)) saturate(180%);backdrop-filter:blur(var(--nv-bl)) saturate(180%);border-radius:var(--nv-r);box-shadow:var(--nv-sh),0 0 0 var(--nv-bw) var(--nv-bc)}
 :root[data-nv] nav button{color:var(--nv-ic)}
 :root[data-nv] nav button.on{color:var(--nv-ac);background:color-mix(in srgb,var(--nv-ac) 16%,transparent)}
+
+/* v19 */
+html,body{touch-action:pan-x pan-y}
+.sp svg{width:132px;height:132px;stroke-width:2.6}
+.sp::before{top:-29px;width:190px;height:190px;margin-left:-95px}
+#spt{font-size:46px;margin-top:22px}
+.ld{direction:ltr;width:230px;height:7px;margin-top:30px}
+.lt{font-size:17px;margin-top:14px}
+.dvb{width:34px;height:34px;border-radius:17px;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;flex:none;color:transparent}
+.dvb svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.dvb.on{background:#1f9d4a;border-color:#1f9d4a;color:#fff}
+.dvs{display:flex;gap:8px;margin:2px 0 8px}
+.dvs span{flex:1;text-align:center;padding:8px 6px;border-radius:14px;background:var(--card);font-size:13px}
+.dvs b{display:block;font-size:20px}
+.stw{color:#d97706}.std{color:#1f9d4a}
+.psum{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-radius:14px;background:var(--card);margin:6px 0;font-size:14px}
+.fab.del{inset-inline-end:auto;inset-inline-start:18px;background:var(--acc);color:#fff}
+
+/* v19 */
+.fdel{background:var(--acc);color:#fff}
+.gh{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:16px 4px 6px;color:var(--mute);font-size:13px;font-weight:600}
+.gh b{color:var(--ink);font-size:14px}
+
+/* v20 */
+.dvb:not(.on){color:#d97706;border-color:rgba(217,119,6,.55);background:rgba(255,149,0,.14)}
+.dvb:not(.on) svg{stroke-width:2}
+
+/* v21 */
+.chips.c5{overflow:visible;gap:6px}
+.chips.c5 .ch{flex:1;padding:8px 2px;text-align:center;font-size:13px;white-space:nowrap}
+.chips.c5 .sep{flex:none;width:1px;background:var(--line);margin:6px 1px}
 </style>
 </head>
 <body>
@@ -690,7 +721,6 @@ function curSale(){const o=S.orders[cur]||{},mt=S.meta[cur]||{},n=mt.notes||{},i
  const ex=exOf(cur);if(ex){items.push({n:'درخواست اضافه',q:1,p:ex,note:'',u:'',x:1});sub+=ex}
  const c=calc(sub,isTk(cur));
  return {t:Date.now(),table:curLb(),items,sub:c.sub,svc:c.svc,tk:c.tk,vat:c.vat,total:c.total,cust:{name:mt.name||'',phone:mt.phone||''}}}
-function kText(){const s=curSale();return s.table+(s.cust.name?' '+s.cust.name:'')+'\n'+s.items.filter(i=>!i.x).map(i=>i.n+'  ←  '+i.q+' '+(i.u||'پرس')+(i.note?' ('+i.note+')':'')).join('\n')}
 function totHTML(){const o=S.orders[cur]||{},base=ordTotal(o),ex=exOf(cur),c=calc(base+ex,isTk(cur)),fr=(l,v)=>v?`<div class="fr"><span>${l}</span><span>${T(v)}</span></div>`:'';
  return (c.total!=base?fr('جمع اقلام',base)+fr('درخواست اضافه',ex)+fr('حق سرویس',c.svc)+fr('بیرون‌بر',c.tk)+fr('ارزش افزوده',c.vat):'')+`<div class="tot"><span>مبلغ قابل پرداخت</span><b>${T(c.total)}</b></div>`}
 function setExP(v){(S.meta[cur]=S.meta[cur]||{}).exP=Math.max(0,+v||0);save();const t=$('#tt');if(t)t.innerHTML=totHTML();const b=document.querySelector('#cartbar b');if(b)b.textContent=T(grand(cur))}
@@ -769,13 +799,6 @@ const TRASH='<svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12h
 function undo(fn){let e=document.getElementById('ut');if(!e){e=document.createElement('div');e.id='ut';document.body.appendChild(e)}e.innerHTML='<span>حذف شد</span><button>بازگردانی</button>';e.classList.add('on');e.querySelector('button').onclick=()=>{fn();e.classList.remove('on')};clearTimeout(undo.t);undo.t=setTimeout(()=>e.classList.remove('on'),5000)}
 function delLive(k){const o=S.orders[k],m=S.meta[k];delete S.orders[k];delete S.meta[k];save();render();undo(()=>{S.orders[k]=o;if(m)S.meta[k]=m;save();render()})}
 function delSaleQ(i){const s=S.sales.splice(i,1)[0];save();render();undo(()=>{S.sales.splice(i,0,s);save();render()})}
-function doneList(){
- let a=S.sales.map((s,i)=>({...s,i}));const q=nd(dQ.trim().toLowerCase());
- if(q)a=a.filter(s=>nd([lb(s.table),s.cust&&s.cust.name,s.cust&&s.cust.phone,s.no,new Date(s.t).toLocaleDateString('fa-IR'),...s.items.map(i=>i.n)].join(' ')).toLowerCase().includes(q));
- a.sort((x,y)=>dS=='max'?y.total-x.total:y.t-x.t);
- const IK='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16 9.5"/></svg>',IX='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/></svg>';
- return a.map(s=>{const t=new Date(s.t),c=s.st=='cancel';
-  return `<button class="li srow ${c?'cx':''}" onclick="reprint(${s.i})"><span class="si">${c?IX:IK}</span><div style="flex:1"><b>سفارش ${fa(s.no||0)} | ${E((s.cust&&s.cust.name)||lb(s.table))}</b><small>${t.toLocaleDateString('fa-IR')} - ${t.toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'})}</small></div><div class="am" style="text-align:end"><b>${T(s.total)}</b><small class="${c?'cxt':'okt'}">${c?'لغو شد':'موفق'}</small></div><span class="rdel" role="button" aria-label="حذف" onclick="event.stopPropagation();delSaleQ(${s.i})">${TRASH}</span></button>`}).join('')||'<p class="empty">موردی پیدا نشد.</p>'}
 let mcat='';
 function vMenu(){
  const cats=[...new Set([...S.cats,...S.menu.map(m=>m.cat)])];if(!cats.includes(mcat))mcat=cats[0]||'';
@@ -813,12 +836,6 @@ function rbEditor(){const b=S.rb;
 function fsGroup(){return `<details class="grp"><summary>تمام‌صفحه</summary><div class="gb"><label class="tg"><span>باز شدن برنامه به‌صورت تمام‌صفحه</span><input type="checkbox" ${S.fullscreen?'checked':''} onchange="fsPref(this.checked)"><i></i></label><small>مرورگر اجازه نمی‌دهد برنامه خودش بدون لمس تمام‌صفحه شود؛ پس با اولین لمس بعد از باز کردن برنامه، تمام‌صفحه فعال می‌شود.</small></div></details>`}
 const vs6=vSet;vSet=function(){let h=vs6();if(st=='look'){const i=h.indexOf('<h2>وزن فونت</h2>');if(i>=0)h=h.slice(0,i)+rbEditor()+fsGroup()+h.slice(i)}return h};
 /* v14 */
-function liveList(){
- let a=Object.keys(S.orders).map(k=>({k,o:S.orders[k],m:S.meta[k]||{}}));const q=nd(lQ.trim().toLowerCase());
- if(q)a=a.filter(x=>nd(lblOf(x.k)+' '+(x.m.name||'')+' '+(x.m.phone||'')+' '+Object.keys(x.o).map(id=>(S.menu.find(y=>y.id==id)||{}).name||'').join(' ')).toLowerCase().includes(q));
- a.sort((x,y)=>lS=='max'?grand(y.k)-grand(x.k):(y.m.t||0)-(x.m.t||0));
- return a.map(x=>{const t=x.m.t?new Date(x.m.t):null;
-  return `<button class="li" onclick="openLive('${x.k}')"><div style="flex:1"><b>${E(lblOf(x.k))}${x.m.name?' - '+E(x.m.name):''}</b><small>${fa(cnt(x.o))} آیتم${x.m.reg?' - ثبت‌شده':' - ثبت‌نشده'}${x.m.phone?' - '+E(x.m.phone):''}</small>${t?`<small>${t.toLocaleDateString('fa-IR')} - ${t.toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'})}</small>`:''}</div><span>${T(grand(x.k))}</span><span class="rdel" role="button" aria-label="حذف" onclick="event.stopPropagation();delLive('${x.k}')">${TRASH}</span></button>`}).join('')||'<p class="empty">موردی پیدا نشد.</p>'}
 function vRep(){
  const DAY=864e5,t0=new Date();t0.setHours(0,0,0,0);const base=t0.getTime();
  const okS=S.sales.filter(s=>s.st!='cancel'),inDay=(s,d)=>s.t>=base-d*DAY&&s.t<base-d*DAY+DAY;
@@ -829,7 +846,7 @@ function vRep(){
  const wk=[6,5,4,3,2,1,0].map(d=>({d,v:dayTot(d),l:new Date(base-d*DAY).toLocaleDateString('fa-IR',{weekday:'short'})})),wm=Math.max(1,...wk.map(x=>x.v));
  const pct=yd>0?Math.round((sum-yd)/yd*100):null;
  return `<h1>تسویه‌شده‌ها</h1><details class="nd" ${topOpen?'open':''} ontoggle="topOpen=this.open"><summary>آمار فروش</summary><div class="hero"><small>فروش امروز</small><b>${T(sum)}</b>${pct!==null?`<span class="dl">${pct>=0?'▲':'▼'} ${fa(Math.abs(pct))}٪ نسبت به دیروز</span>`:''}</div><div class="tiles"><div><small>سفارش موفق</small><b>${fa(td.length)}</b></div><div><small>میانگین سفارش</small><b>${T(td.length?Math.round(sum/td.length):0)}</b></div><div><small>لغو شده</small><b>${fa(cx)}</b></div></div><h2>فروش ۷ روز اخیر (هزار تومان)</h2><div class="wk">${wk.map(x=>`<div class="wc ${x.d==0?'today':''}"><u>${x.v?fa(Math.round(x.v/1000)):''}</u><i style="height:${Math.max(3,x.v/wm*84)}%"></i><span>${x.l}</span></div>`).join('')}</div>${top.length?`<h2>پرفروش‌ترین‌های امروز</h2><div style="max-height:260px;overflow:auto">${top.map(([n,q],i)=>`<div class="bar2"><span class="rk">${fa(i+1)}</span><span>${E(n)}</span><div class="tr"><i style="width:${q/mx*100}%"></i></div><em>${fa(q)}</em></div>`).join('')}</div>`:'<p class="empty">امروز هنوز فروشی ثبت نشده.</p>'}</details>`
- +'<h2>همه تسویه‌ها</h2>'+bar('d')+'<div id="lst">'+doneList()+'</div>'+(S.sales.length?'<button class="danger wide" onclick="delAll()">حذف همه تسویه‌شده‌ها</button>':'')}
+ +'<h2>همه تسویه‌ها</h2>'+bar('d')+'<div id="lst">'+doneList()+'</div>'+(S.sales.length?`<button class="fab fdel" onclick="delAll()" aria-label="حذف همه تسویه‌ها">${TRASH}</button>`:'')}
 function catMove(i,d){const j=i+d;if(j<0||j>=S.cats.length)return;[S.cats[i],S.cats[j]]=[S.cats[j],S.cats[i]];save();render()}
 const vs7=vSet;vSet=function(){let h=vs7();if(st=='dc'&&S.cats.length>1)h+='<h2>ترتیب نمایش دسته‌بندی‌ها</h2>'+S.cats.map((c,i)=>`<div class="li"><b style="flex:1">${E(c)}</b><div class="qty"><button onclick="catMove(${i},-1)" aria-label="بالا">↑</button><button onclick="catMove(${i},1)" aria-label="پایین">↓</button></div></div>`).join('')+'<small>این ترتیب در صفحه‌ی ثبت سفارش و منوی تنظیمات اعمال می‌شود.</small>';return h};
 /* v18 */
@@ -844,6 +861,48 @@ function navEditor(){const n=S.nav;
  const sl=(k,l,mx,u)=>`<div class="sl"><div class="rw"><span>${l}</span><b><i id="n_${k}">${n[k]}</i>${u}</b></div><input type="range" min="0" max="${mx}" value="${n[k]}" oninput="nset('${k}',+this.value)"></div>`;
  return `<details class="grp"><summary>منوی شناور پایین</summary><div class="gb">${cr('رنگ پس‌زمینه','bg')}${sl('ba','اوپسیتی',100,'٪')}${sl('bl','بلور',60,'px')}${sl('r','گردی گوشه‌ها',40,'px')}${cr('رنگ بوردر','bc')}${sl('bw','ضخامت بوردر',4,'px')}${sl('sb','محو شدن سایه',60,'px')}${sl('sy','فاصله سایه',30,'px')}${sl('sa','شدت سایه',60,'٪')}${cr('رنگ آیکون‌ها','ic')}${cr('رنگ آیتم انتخاب‌شده','ac')}<small>تغییرات همزمان روی منوی پایین همین صفحه دیده می‌شود.</small><button class="ghost wide" onclick="nrst()">بازگشت به پیش‌فرض</button></div></details>`}
 const vs8=vSet;vSet=function(){let h=vs8();if(st=='look'){const i=h.indexOf('<h2>وزن فونت</h2>');if(i>=0)h=h.slice(0,i)+navEditor()+h.slice(i)}return h};
+/* v19 */
+let dPer='all',lDv='all';
+function perStart(p){const t0=new Date();t0.setHours(0,0,0,0);const b=t0.getTime(),D=864e5;if(p=='day')return b;if(p=='week')return b-((t0.getDay()+1)%7)*D;if(p=='month'){let jd=1;try{jd=+new Intl.DateTimeFormat('en-u-ca-persian',{day:'numeric'}).format(new Date())||1}catch(e){}return b-(jd-1)*D}return 0}
+const perChips=()=>'<div class="chips">'+[['day','امروز'],['week','این هفته'],['month','این ماه'],['all','همه']].map(([k,n])=>`<button class="ch ${dPer==k?'on':''}" onclick="dPer='${k}';render()">${n}</button>`).join('')+'</div>';
+const dvCount=()=>{let w=0,d=0;Object.keys(S.orders).forEach(k=>{(S.meta[k]||{}).dv?d++:w++});return{w,d}};
+const dvChips=()=>{const c=dvCount();return `<div class="dvs"><span class="stw"><b>${fa(c.w)}</b>منتظر تحویل</span><span class="std"><b>${fa(c.d)}</b>تحویل‌شده</span></div><div class="chips">`+[['all','همه'],['wait','منتظر تحویل'],['done','تحویل‌شده']].map(([k,n])=>`<button class="ch ${lDv==k?'on':''}" onclick="lDv='${k}';render()">${n}</button>`).join('')+'</div>'};
+const bar0=bar;bar=function(k){return (k=='d'?perChips():k=='l'?dvChips():'')+bar0(k)};
+function togDv(k){const m=S.meta[k]=S.meta[k]||{};m.dv=!m.dv;save();render()}
+function liveList(){
+ let a=Object.keys(S.orders).map(k=>({k,o:S.orders[k],m:S.meta[k]||{}}));const q=nd(lQ.trim().toLowerCase());
+ if(lDv=='wait')a=a.filter(x=>!x.m.dv);else if(lDv=='done')a=a.filter(x=>x.m.dv);
+ if(q)a=a.filter(x=>nd(lblOf(x.k)+' '+(x.m.name||'')+' '+(x.m.phone||'')+' '+Object.keys(x.o).map(id=>(S.menu.find(y=>y.id==id)||{}).name||'').join(' ')).toLowerCase().includes(q));
+ a.sort((x,y)=>lS=='max'?grand(y.k)-grand(x.k):(y.m.t||0)-(x.m.t||0));
+ const TICK='<svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>';
+ return a.map(x=>{const t=x.m.t?new Date(x.m.t):null,dv=!!x.m.dv;
+  return `<button class="li" onclick="openLive('${x.k}')"><span class="dvb ${dv?'on':''}" role="button" aria-label="تحویل" onclick="event.stopPropagation();togDv('${x.k}')">${dv?TICK:'<svg viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M7 3v3.5a5 5 0 0 0 2 4l3 1.5-3 1.5a5 5 0 0 0-2 4V21M17 3v3.5a5 5 0 0 1-2 4l-3 1.5 3 1.5a5 5 0 0 1 2 4V21"/></svg>'}</span><div style="flex:1"><b>${E(lblOf(x.k))}${x.m.name?' - '+E(x.m.name):''}</b><small class="${dv?'std':'stw'}">${dv?'تحویل شد':'منتظر تحویل'}</small><small>${fa(cnt(x.o))} آیتم${x.m.reg?' - ثبت‌شده':' - ثبت‌نشده'}${x.m.phone?' - '+E(x.m.phone):''}</small>${t?`<small>${t.toLocaleDateString('fa-IR')} - ${t.toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'})}</small>`:''}</div><span>${T(grand(x.k))}</span><span class="rdel" role="button" aria-label="حذف" onclick="event.stopPropagation();delLive('${x.k}')">${TRASH}</span></button>`}).join('')||'<p class="empty">موردی پیدا نشد.</p>'}
+const vr0=vRep;vRep=function(){return vr0().replace(/<button class="danger wide" onclick="delAll\(\)">.*?<\/button>/,S.sales.length?'<button class="fab del" onclick="delAll()" aria-label="حذف همه"><svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12h10l1-12M9 7V4h6v3"/></svg></button>':'')};
+function kText(){const s=curSale();return s.table+(s.cust.name?'  '+s.cust.name:'')+'\n'+s.items.filter(i=>!i.x).map(i=>i.n+'  ←  '+i.q+' '+(i.u||'پرس')+(i.note?' ('+i.note+')':'')).join('\n')+'\nمبلغ کل: '+s.total.toLocaleString('en-US')+' تومان'}
+/* v19 */
+let dG='day';
+const WK0=t=>{const d=new Date(t);d.setHours(0,0,0,0);return d.getTime()-((d.getDay()+1)%7)*864e5};
+function gkey(t){const d=new Date(t),f=(x,o)=>new Date(x).toLocaleDateString('fa-IR',o);
+ if(dG=='week'){const s=WK0(t);return['w'+s,'هفته '+f(s,{day:'numeric',month:'long'})+' تا '+f(s+6*864e5,{day:'numeric',month:'long'})]}
+ if(dG=='month'){const l=f(t,{year:'numeric',month:'long'});return[l,l]}
+ const td=new Date().toDateString()==d.toDateString();return[d.toDateString(),(td?'امروز - ':'')+f(t,{weekday:'long',day:'numeric',month:'long'})]}
+function doneList(){
+ let a=S.sales.map((s,i)=>({...s,i}));const q=nd(dQ.trim().toLowerCase());
+ if(q)a=a.filter(s=>nd([lb(s.table),s.cust&&s.cust.name,s.cust&&s.cust.phone,s.no,new Date(s.t).toLocaleDateString('fa-IR'),...s.items.map(i=>i.n)].join(' ')).toLowerCase().includes(q));
+ a.sort((x,y)=>dS=='max'?y.total-x.total:y.t-x.t);
+ const IK='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16 9.5"/></svg>',IX='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/></svg>';
+ const row=s=>{const t=new Date(s.t),c=s.st=='cancel';
+  return `<button class="li srow ${c?'cx':''}" onclick="reprint(${s.i})"><span class="si">${c?IX:IK}</span><div style="flex:1"><b>سفارش ${fa(s.no||0)} | ${E((s.cust&&s.cust.name)||lb(s.table))}</b><small>${t.toLocaleDateString('fa-IR')} - ${t.toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'})}</small></div><div class="am" style="text-align:end"><b>${T(s.total)}</b><small class="${c?'cxt':'okt'}">${c?'لغو شد':'موفق'}</small></div><span class="rdel" role="button" aria-label="حذف" onclick="event.stopPropagation();delSaleQ(${s.i})">${TRASH}</span></button>`};
+ const none='<p class="empty">موردی پیدا نشد.</p>';
+ if(dS=='max')return a.map(row).join('')||none;
+ const gs=[];a.forEach(s=>{const[k,l]=gkey(s.t);let g=gs[gs.length-1];if(!g||g.k!=k){g={k,l,it:[],sum:0,n:0};gs.push(g)}g.it.push(s);if(s.st!='cancel'){g.sum+=s.total;g.n++}});
+ return gs.map(g=>`<div class="gh"><b>${g.l}</b><span>${fa(g.n)} سفارش | ${T(g.sum)}</span></div>`+g.it.map(row).join('')).join('')||none}
+const bar1=bar;bar=function(k){let h=bar1(k);if(k=='d'){const i=h.indexOf('<input');const c='<div class="chips">'+[['day','روزانه'],['week','هفتگی'],['month','ماهانه']].map(([g,n])=>`<button class="ch ${dG==g?'on':''}" onclick="dG='${g}';render()">${n}</button>`).join('')+'</div>';if(i>=0)h=h.slice(0,i)+c+h.slice(i)}return h};
+/* v21 */
+const bar2=bar;bar=function(k){if(k!='d')return bar2(k);
+ const i=bar2('d').indexOf('<input'),inp=i>=0?bar2('d').slice(i):'';
+ const c=(a,v,on,f)=>a.map(([x,n])=>`<button class="ch ${v==x?'on':''}" onclick="${f}='${x}';render()">${n}</button>`).join('');
+ return '<div class="chips c5">'+c([['new','جدیدترین'],['max','بیشترین']],dS,0,'dS')+'<span class="sep"></span>'+c([['day','روزانه'],['week','هفتگی'],['month','ماهانه']],dG,0,'dG')+'</div>'+inp};
 try{if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}
 applyPrefs();splash();render();
 </script>
