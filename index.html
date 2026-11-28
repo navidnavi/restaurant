@@ -7,7 +7,7 @@
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#12805c">
 <link rel="apple-touch-icon" href="icon-192-v2.png">
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700;800&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700;800&display=swap"></noscript>
 <style>
 :root{--bg:#f3f5f4;--card:#fff;--ink:#101d19;--mute:#64756e;--line:#e1e8e4;--acc:#e2452f;--accfg:#fff;--ok:#12805c;--okfg:#fff;--warn:#b9770e;--sh:0 1px 2px rgba(16,29,25,.06),0 4px 14px rgba(16,29,25,.05);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0c1311;--card:#151f1b;--ink:#e8f1ec;--mute:#93a69c;--line:#243029;--acc:#f0604b;--accfg:#1a0705;--ok:#2fb98a;--okfg:#04170f;--warn:#e6a940;--sh:none}}
@@ -436,6 +436,12 @@ html,body{touch-action:pan-x pan-y}
 @media(prefers-reduced-motion:reduce){.orb,.rg,.lg::after,.lg,.tag{animation:none}.pr{animation:none;stroke-dashoffset:0}}
 .tm{display:block;margin-top:4px;font-size:12.5px;font-weight:700;padding:2px 8px;border-radius:99px;text-align:center}
 .tm.g{background:rgba(52,199,89,.16);color:#1f9d4a}.tm.o{background:rgba(255,149,0,.18);color:#c26a00}.tm.r{background:rgba(255,59,48,.16);color:#d93025}.tm.f{background:rgba(120,120,128,.16);color:var(--mute)}
+/* v23 */
+.tm.b{background:rgba(90,170,255,.18);color:#2b7fd1}
+.tm.y{background:rgba(255,204,0,.24);color:#9a7400}
+.tm.r{background:rgba(255,59,48,.16);color:#d93025}
+.tm.k{background:#3a3a40;color:#fff}
+.tm.f{background:rgba(52,199,89,.16);color:#1f9d4a}
 </style>
 </head>
 <body>
@@ -451,6 +457,9 @@ html,body{touch-action:pan-x pan-y}
 <div id="sh" onclick="if(event.target===this)closeSheet()"></div>
 <div id="toast" role="status"></div>
 <div id="rc"></div>
+<script>
+setTimeout(function(){if(window.__ok)return;var s=document.getElementById('splash');if(!s)return;s.className='';s.innerHTML='<div style="text-align:center;padding:24px;color:#fff;font:600 17px Tahoma,sans-serif;line-height:2"><p>برنامه کامل بارگذاری نشد.</p><p><button onclick="location.reload()" style="font:inherit;padding:10px 18px;border-radius:12px;border:0;background:#fff;color:#111">تلاش دوباره</button></p><p><button onclick="try{caches.keys().then(function(k){return Promise.all(k.map(function(x){return caches.delete(x)}))}).then(function(){return navigator.serviceWorker.getRegistrations()}).then(function(r){r.forEach(function(x){x.unregister()})}).then(function(){location.reload()},function(){location.reload()})}catch(e){location.reload()}" style="font:inherit;padding:10px 18px;border-radius:12px;border:0;background:rgba(255,255,255,.2);color:#fff">پاک‌کردن حافظه‌ی نسخه و بارگذاری دوباره</button></p></div>'},9000);
+</script>
 <script>
 const $=s=>document.querySelector(s);
 const fa=n=>Number(n).toLocaleString('fa-IR',{maximumFractionDigits:2});
@@ -919,7 +928,7 @@ const bar2=bar;bar=function(k){if(k!='d')return bar2(k);
 /* v22 */
 const pd=s=>String(s).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
 const fmtT=ms=>{const s=Math.max(0,Math.floor(ms/1000)),hh=Math.floor(s/3600),mi=Math.floor(s%3600/60),se=s%60,p=n=>String(n).padStart(2,'0');return pd(hh?hh+':'+p(mi)+':'+p(se):p(mi)+':'+p(se))};
-const tmCls=(ms,fr)=>fr?'f':ms<6e5?'g':ms<12e5?'o':'r';
+const tmCls=(ms,fr)=>fr?'f':ms<9e5?'b':ms<15e5?'y':ms<21e5?'r':'k';
 function tmTick(){if(document.hidden)return;document.querySelectorAll('.tm[data-t]').forEach(e=>{if(e.dataset.e)return;const ms=Date.now()-(+e.dataset.t);e.textContent=fmtT(ms);e.className='tm '+tmCls(ms,false)})}
 setInterval(tmTick,1000);
 function togDv(k){const m=S.meta[k]=S.meta[k]||{};m.dv=!m.dv;if(m.dv)m.dvt=Date.now();else delete m.dvt;save();render()}
@@ -937,7 +946,7 @@ function liveList(){
  return a.map(x=>{const t=x.m.t?new Date(x.m.t):null,dv=!!x.m.dv,ms=(x.m.dvt||Date.now())-(x.m.t||Date.now());
   return `<button class="li" onclick="openLive('${x.k}')"><span class="dvb ${dv?'on':''}" role="button" aria-label="تحویل" onclick="event.stopPropagation();togDv('${x.k}')">${dv?TICK:HG}</span><div style="flex:1"><b>${E(lblOf(x.k))}${x.m.name?' - '+E(x.m.name):''}</b><small class="${dv?'std':'stw'}">${dv?'تحویل شد':'منتظر تحویل'}</small><small>${fa(cnt(x.o))} آیتم${x.m.reg?' - ثبت‌شده':' - ثبت‌نشده'}${x.m.phone?' - '+E(x.m.phone):''}</small>${t?`<small>${t.toLocaleDateString('fa-IR')} - ${t.toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'})}</small>`:''}</div><div style="text-align:end"><b>${T(grand(x.k))}</b>${t?`<span class="tm ${tmCls(ms,dv)}" data-t="${x.m.t}" ${dv?`data-e="${x.m.dvt||1}"`:''}>${fmtT(ms)}</span>`:''}</div><span class="rdel" role="button" aria-label="حذف" onclick="event.stopPropagation();delLive('${x.k}')">${TRASH}</span></button>`}).join('')||'<p class="empty">موردی پیدا نشد.</p>'}
 try{if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}
-applyPrefs();splash();render();
+applyPrefs();splash();render();window.__ok=1;
 </script>
 </body>
 </html>
